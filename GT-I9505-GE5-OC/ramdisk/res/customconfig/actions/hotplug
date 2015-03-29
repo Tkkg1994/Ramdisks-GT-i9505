@@ -1,0 +1,33 @@
+#!/sbin/busybox sh
+
+if [ "a$2" != "a" ];then
+
+filename=$(basename $2)
+
+if [ "a$3" == "a" ];then
+  evalcmd='eval "echo \$$filename"'
+  eval $evalcmd
+else
+  evalcmd='eval "$filename=$3"'
+  eval $evalcmd
+  evalcmd='eval "echo \$$filename"'
+  eval $evalcmd
+  
+case "$hotplug" in
+
+  0)
+        echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
+	mv /system/bin/mpdecision.googy /system/bin/mpdecision
+	start mpdecision
+	echo "MPDecision enabled"
+  ;; 
+  1)
+        stop mpdecision
+	mv /system/bin/mpdecision /system/bin/mpdecision.googy
+        echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
+	echo "Intelli-Plug enabled"
+  ;;
+esac;
+
+fi
+fi

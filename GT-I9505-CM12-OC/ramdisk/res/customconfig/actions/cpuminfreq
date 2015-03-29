@@ -1,0 +1,40 @@
+#!/sbin/busybox sh
+
+if [ "a$2" != "a" ];then
+
+filename=$(basename $2)
+
+if [ "a$3" == "a" ];then
+  evalcmd='eval "echo \$$filename"'
+  eval $evalcmd
+else
+  evalcmd='eval "$filename=$3"'
+  eval $evalcmd
+  evalcmd='eval "echo \$$filename"'
+  eval $evalcmd
+  
+if [ "$hotplug" == "0" ];then
+   stop mpdecision
+else
+   echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
+fi
+    echo "0" > /sys/module/msm_thermal/parameters/mako_enabled
+    echo "1" > /sys/devices/system/cpu/cpu0/online
+    echo "1" > /sys/devices/system/cpu/cpu1/online
+    echo "1" > /sys/devices/system/cpu/cpu2/online
+    echo "1" > /sys/devices/system/cpu/cpu3/online
+    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
+    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
+    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
+    echo "1" > /sys/module/msm_thermal/parameters/mako_enabled
+if [ "$hotplug" == "0" ];then
+   start mpdecision
+else
+   echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
+fi
+
+echo "CPU Min frequency applied : $scaling_min_freq"
+
+fi
+fi
