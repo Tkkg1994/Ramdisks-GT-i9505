@@ -15,7 +15,7 @@ cat << ENDCONFIG
       <seekBar description="Sets the sched_mc value which changes the cpu scheduler behaviour for multi-cpu systems. 0 is kernel's default value which turns sched_mc off. Setting it to 1 means that the first core will be tried to be loaded more and setting it to 2 will bias task wake-ups to semi-idle cpu package for power savings. (default: 0)"
             name="sched_mc" action="generic /sys/devices/system/cpu/sched_mc_power_savings" unit="" min="0" reversed="false" step="1" max="2"/>
             
-       <spinner description="Hotplug mechanism. Default: Intelli-Plug" name="Hotplug mechanism" action="hotplug /tmp/hotplug">
+       <spinner description="Hotplug mechanism. Default: MPDecision" name="Hotplug mechanism" action="hotplug /tmp/hotplug">
              <spinnerItem name="MPDecision" value="0"/> 
              <spinnerItem name="Intelli-Plug" value="1"/> 
        </spinner>
@@ -253,34 +253,38 @@ cat << ENDCONFIG
     </settingsPane>
   </settingsTab>    
 
-  <settingsTab name="Sound Control">
+<settingsTab name="Sound">
 
-	<settingsPane description="Here you can select unlock PA gain control" name="Sound Controls">
+	<settingsPane name="Sound Control" description="Sound Control">		
+      
+		<seekBar description="Headphone gain. Default: 30" 
+				name="Headphone gain" 
+				action="generic_double /sys/kernel/sound_control_3/gpl_headphone_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
 
-		<spinner description="HeadPhones PA GAIN LOCK, to hear any effect change the lock when no sound is playing!" name="HeadPhones GAIN LOCK" action="generic /sys/kernel/sound_control_3/gpl_sound_control_locked">
-			<spinnerItem name="GAIN LOCKED" value="1"/> 
-			<spinnerItem name="GAIN UNLOCKED" value="0"/> 
-		</spinner>
+		<seekBar description="Headphone PowerAmp gain. Default: 15" 
+				name="Headphone PA gain" 
+				action="generic_double /sys/kernel/sound_control_3/gpl_headphone_pa_gain"
+				unit="" min="1" reversed="false" step="1" max="30"/>
+
+		<seekBar description="Speaker gain. Default: 30" 
+				name="Speaker gain" 
+				action="generic_double /sys/kernel/sound_control_3/gpl_speaker_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
+
+		<seekBar description="General Mic gain. Default: 30" 
+				name="General Mic gain" 
+				action="generic /sys/kernel/sound_control_3/gpl_mic_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
+
+		<seekBar description="Camera Mic gain. Default: 30" 
+				name="Camera Mic gain" 
+				action="generic /sys/kernel/sound_control_3/gpl_cam_mic_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
 
 	</settingsPane>
 
-	<settingsPane description="Here you can tune Mic, Speaker and HeadPhones volume gain" name="Sound Controls">
-
-		<seekBar description="Control for HeadPhones LEFT and InCall small speaker gain volume!" name="HeadPhones and InCall Gain LEFT" action="generic_headphone_left" unit="vol" min="-30" reversed="false" step="1" max="20"/>
-
-		<seekBar description="Control for HeadPhones RIGHT and InCall small speaker gain volume!" name="HeadPhones and InCall Gain RIGHT" action="generic_headphone_right" unit="vol" min="-30" reversed="false" step="1" max="20"/>
-
-		<seekBar description="Control for Loud Speaker gain volume! When you set higher, better listen to music so you will know when it is more than what the hardware can handle." name="Speaker Gain" action="generic_speaker_sound /sys/kernel/sound_control_3/gpl_speaker_gain" unit="vol" min="-30" reversed="false" step="1" max="30"/>
-
-		<seekBar description="Control for HeadPhones Analog PA Gain! if your ROM support change PA Gain, then switch the LOCK above to GAIN UNLOCKED. if you dont hear any change, then your ROM dont support this control. set GAIN LOCKED. it's will boost the headphones gain." name="HeadPhones PA Gain" action="generic_pa_sound /sys/kernel/sound_control_3/gpl_headphone_pa_gain" unit="gain" min="-10" reversed="false" step="1" max="10"/>
-
-		<seekBar description="Control for Camera recording MIC gain volume!" name="Camera MIC gain" action="generic_mic_sound /sys/kernel/sound_control_3/gpl_cam_mic_gain" unit="vol" min="-40" reversed="false" step="1" max="40"/>
-
-		<seekBar description="Control for Handset Mic gain volume on call!" name="Handset MIC gain on call" action="generic_mic_sound /sys/kernel/sound_control_3/glp_mic_gain" unit="vol" min="-40" reversed="false" step="1" max="40"/>
-
-	</settingsPane>
-
-  </settingsTab>
+</settingsTab>
         
   <settingsTab name="Charge">
 

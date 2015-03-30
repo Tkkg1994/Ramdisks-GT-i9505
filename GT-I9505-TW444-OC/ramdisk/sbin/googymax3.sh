@@ -57,6 +57,9 @@ if [ ! -e /cpufreq ]; then
 	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
 	$BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
 	$BB ln -s /sys/module/msm_thermal/parameters/ /cputemp;
+	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli;
+	$BB ln -s /sys/module/msm_mpdecision/ /hotplugs/msm_mpdecision;
+	$BB ln -s /sys/devices/system/cpu/cpufreq/all_cpus/ /all_cpus;
 fi;
 
 # cleaning
@@ -127,8 +130,8 @@ echo "384000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
 setprop persist.service.adb.enable 1
-setprop dalvik.vm.execution-mode int:jit
 setprop pm.sleep_mode 1
+setprop wifi.supplicant_scan_interval 180
 
 if [ ! -d /data/.googymax3 ]; then
 	$BB mkdir -p /data/.googymax3;
@@ -200,7 +203,7 @@ if [ "$hotplug" == "0" ];then
 else
    echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
 fi;
-    echo "0" > /sys/module/msm_thermal/parameters/mako_enabled
+    echo "N" > /sys/module/msm_thermal/parameters/enabled
     echo "1" > /sys/devices/system/cpu/cpu0/online
     echo "1" > /sys/devices/system/cpu/cpu1/online
     echo "1" > /sys/devices/system/cpu/cpu2/online
@@ -217,7 +220,7 @@ fi;
     echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
     echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
     echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
-    echo "1" > /sys/module/msm_thermal/parameters/mako_enabled
+    echo "Y" > /sys/module/msm_thermal/parameters/enabled
 if [ "$hotplug" == "0" ];then
    start mpdecision
 else
@@ -265,7 +268,7 @@ if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 	newvolt15=$(( $(grep 594000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
 	newvolt14=$(( $(grep 702000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
 	newvolt13=$(( $(grep 810000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT13) ))
-	newvolt12=$(( $(grep 918000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT12) ))
+	newvolt12=$(( $(grep 918000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
 	newvolt11=$(( $(grep 1026000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
 	newvolt10=$(( $(grep 1134000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT10) ))
 	newvolt9=$(( $(grep 1242000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT9) ))
@@ -297,6 +300,10 @@ if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 	echo "2106000 $newvolt1" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 		
 fi
+
+# Selinux Switch
+
+	setenforce 0;
 
 # GPU Voltage Control Switch
 
@@ -341,10 +348,6 @@ fi;
 # echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
 # echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
 
-	# disabling knox security at boot
-	pm disable com.sec.knox.seandroid;
-	setenforce 0;
-
 # Special kernel tweaks (thx to nfsmw_gr)
 if [ "$tweaks" == "on" ];then
 
@@ -377,4 +380,3 @@ fi;
 
 	# Fix critical perms again after init.d mess
 	CRITICAL_PERM_FIX;
-
