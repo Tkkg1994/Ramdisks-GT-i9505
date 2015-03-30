@@ -191,7 +191,7 @@ if [ "$hotplug" == "0" ];then
 else
    echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
 fi;
-    echo "N" > /sys/module/msm_thermal/parameters/mako_enabled
+    echo "N" > /sys/module/msm_thermal/parameters/enabled
     echo "1" > /sys/devices/system/cpu/cpu0/online
     echo "1" > /sys/devices/system/cpu/cpu1/online
     echo "1" > /sys/devices/system/cpu/cpu2/online
@@ -208,7 +208,7 @@ fi;
     echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
     echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
     echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
-    echo "Y" > /sys/module/msm_thermal/parameters/mako_enabled
+    echo "Y" > /sys/module/msm_thermal/parameters/enabled
 if [ "$hotplug" == "0" ];then
    start mpdecision
 else

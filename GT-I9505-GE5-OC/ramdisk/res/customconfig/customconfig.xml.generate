@@ -19,6 +19,18 @@ cat << ENDCONFIG
              <spinnerItem name="MPDecision" value="0"/> 
              <spinnerItem name="Intelli-Plug" value="1"/> 
        </spinner>
+
+       <spinner description="How many cores should be on at max? ONLY with intelli-plug" name="Intelli-Plug max possible cores" action="generic /sys/module/intelli_plug/parameters/nr_possible_cores">
+             <spinnerItem name="1" value="1"/> 
+             <spinnerItem name="2" value="2"/> 
+             <spinnerItem name="3" value="3"/> 
+             <spinnerItem name="4" value="4"/> 
+       </spinner>
+
+      <checkbox description="You can enable or disable intelli-touch-boost here. ONLY with intelli-plug" 
+                name="Disable Touchboost" 
+                action="generic01 /sys/module/intelli_plug/parameters/touch_boost_active" 
+                label="Enable/Disable touch-boost for intelli-plug"/>
        
        <spinner description="This will set the default CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps." name="Default CPU Governor" action="cpugov /tmp/cpu_governor">
              <spinnerItem name="OnDemand" value="ondemand"/> 
@@ -85,7 +97,7 @@ cat << ENDCONFIG
        </spinner>
        
     </settingsPane>
-    
+
 	<settingsPane description="CPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="CPU Voltage Control">
 
       <checkbox description="Enable/Disable CPU Voltage Control." name="CPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_CPU" label="CPU Voltage Control Switch"/>
@@ -116,102 +128,24 @@ cat << ENDCONFIG
 
     <settingsPane name="Thermal Control"
 	      description="Thermal Control. CAUTION: Setting wrong values here can damage your phone in case of severe overheat. USE AT YOUR OWN RISK !!!">		  
-      
+
     <settingsPane description="Poll interval" name="Poll interval">
       <seekBar description="Poll interval (ms)" 
-		name="Poll interval. Default: 150ms" action="generic /sys/kernel/msm_thermal/conf/poll_ms" unit="ms" min="50" reversed="false" step="50" max="1000"/>
-    </settingsPane>
-       
-    <settingsPane name="Low level lock"
-	      description="Low level lock">		  
-	      
-      <spinner description="Set the CPU max frequency lock. Default: 1350 MHz" 
-               name="CPU max frequency lock" 
-               action="generic /sys/kernel/msm_thermal/conf/allowed_low_freq">"
-             <spinnerItem name="1890 MHz" value="1890000"/> 
-             <spinnerItem name="1782 MHz" value="1782000"/> 
-             <spinnerItem name="1674 MHz" value="1674000"/> 
-             <spinnerItem name="1566 MHz" value="1566000"/> 
-             <spinnerItem name="1458 MHz" value="1458000"/> 
-             <spinnerItem name="1350 MHz" value="1350000"/> 
-             <spinnerItem name="1242 MHz" value="1242000"/> 
-             <spinnerItem name="1134 MHz" value="1134000"/> 
-             <spinnerItem name="1026 MHz" value="1026000"/> 
-             <spinnerItem name="918 MHz" value="918000"/> 
-             <spinnerItem name="810 MHz" value="810000"/> 
-             <spinnerItem name="702 MHz" value="702000"/> 
-             <spinnerItem name="594 MHz" value="594000"/> 
-             <spinnerItem name="486 MHz" value="486000"/> 
-             <spinnerItem name="384 MHz" value="384000"/> 
-       </spinner>
+		name="Poll interval. Default: 150ms" action="generic /sys/module/msm_thermal/parameters/poll_ms" unit="ms" min="50" reversed="false" step="50" max="1000"/>
 
-      <seekBar description="Low Level Lock Trigger (°C)" 
-		name="Low Level Lock Trigger (79°C)" action="generic /sys/kernel/msm_thermal/conf/allowed_low_high" unit="°C" min="60" reversed="false" step="1" max="90"/>
-      <seekBar description="Low Level Lock Release (°C)" 
-		name="Low Level Lock Release (73°C)" action="generic /sys/kernel/msm_thermal/conf/allowed_low_low" unit="°C" min="60" reversed="false" step="1" max="90"/>
-       
     </settingsPane>
-    
-    <settingsPane name="Mid level lock"
-	      description="Mid level lock">		  
-	      
-      <spinner description="Set the CPU max frequency lock. Default: 810 MHz" 
-               name="CPU max frequency lock" 
-               action="generic /sys/kernel/msm_thermal/conf/allowed_mid_freq">"
-             <spinnerItem name="1890 MHz" value="1890000"/> 
-             <spinnerItem name="1782 MHz" value="1782000"/> 
-             <spinnerItem name="1674 MHz" value="1674000"/> 
-             <spinnerItem name="1566 MHz" value="1566000"/> 
-             <spinnerItem name="1458 MHz" value="1458000"/> 
-             <spinnerItem name="1350 MHz" value="1350000"/> 
-             <spinnerItem name="1242 MHz" value="1242000"/> 
-             <spinnerItem name="1134 MHz" value="1134000"/> 
-             <spinnerItem name="1026 MHz" value="1026000"/> 
-             <spinnerItem name="918 MHz" value="918000"/> 
-             <spinnerItem name="810 MHz" value="810000"/> 
-             <spinnerItem name="702 MHz" value="702000"/> 
-             <spinnerItem name="594 MHz" value="594000"/> 
-             <spinnerItem name="486 MHz" value="486000"/> 
-             <spinnerItem name="384 MHz" value="384000"/> 
-       </spinner>
 
-      <seekBar description="Mid Level Lock Trigger (°C)" 
-		name="Mid Level Lock Trigger (81°C)" action="generic /sys/kernel/msm_thermal/conf/allowed_mid_high" unit="°C" min="60" reversed="false" step="1" max="90"/>
-      <seekBar description="Mid Level Lock Release (°C)" 
-		name="Mid Level Lock Release (76°C)" action="generic /sys/kernel/msm_thermal/conf/allowed_mid_low" unit="°C" min="60" reversed="false" step="1" max="90"/>
-       
-    </settingsPane>
-    
-    <settingsPane name="High level lock"
-	      description="High level lock">		  
-	      
-      <spinner description="Set the CPU max frequency lock. Default: 384 MHz" 
-               name="CPU max frequency lock" 
-               action="generic /sys/kernel/msm_thermal/conf/allowed_max_freq">"
-             <spinnerItem name="1890 MHz" value="1890000"/> 
-             <spinnerItem name="1782 MHz" value="1782000"/> 
-             <spinnerItem name="1674 MHz" value="1674000"/> 
-             <spinnerItem name="1566 MHz" value="1566000"/> 
-             <spinnerItem name="1458 MHz" value="1458000"/> 
-             <spinnerItem name="1350 MHz" value="1350000"/> 
-             <spinnerItem name="1242 MHz" value="1242000"/> 
-             <spinnerItem name="1134 MHz" value="1134000"/> 
-             <spinnerItem name="1026 MHz" value="1026000"/> 
-             <spinnerItem name="918 MHz" value="918000"/> 
-             <spinnerItem name="810 MHz" value="810000"/> 
-             <spinnerItem name="702 MHz" value="702000"/> 
-             <spinnerItem name="594 MHz" value="594000"/> 
-             <spinnerItem name="486 MHz" value="486000"/> 
-             <spinnerItem name="384 MHz" value="384000"/> 
-       </spinner>
+    <settingsPane name="Temp. Limit"
+	      description="Temperature limit control">
 
-      <seekBar description="High Level Lock Trigger (°C)" 
-		name="High Level Lock Trigger (84°C)" action="generic /sys/kernel/msm_thermal/conf/allowed_max_high" unit="°C" min="60" reversed="false" step="1" max="90"/>
-      <seekBar description="High Level Lock Release (°C)" 
-		name="High Level Lock Release (80°C)" action="generic /sys/kernel/msm_thermal/conf/allowed_max_low" unit="°C" min="60" reversed="false" step="1" max="90"/>
-       
+      <seekBar description="Temperature limit for cores (°C)" 
+		name="Core Temp. Limit (80°C)" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="100"/>
+
+      <seekBar description="Temperature limit for device (°C)" 
+		name="Checkes the temp. for the whole device (60°C)" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="90"/>
+
     </settingsPane>
-    
+
     </settingsPane>
     
   </settingsTab>
@@ -319,48 +253,38 @@ cat << ENDCONFIG
     </settingsPane>
   </settingsTab>    
 
-  <settingsTab name="Sound">
+<settingsTab name="Sound">
 
-    <settingsPane name="Sound Control"
-	      description="Sound Control">		  
+	<settingsPane name="Sound Control" description="Sound Control">		
       
-      <seekBar  description="Headphone gain. Default: 40" 
-                name="Headphone gain" 
-                action="generic /sys/kernel/sound_control/gpl_headphone_gain"
-                unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="Headphone gain. Default: 30" 
+				name="Headphone gain" 
+				action="generic_double /sys/kernel/sound_control_3/gpl_headphone_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
 
-      <seekBar  description="Headphone PowerAmp gain. Default: 20" 
-                name="Headphone PA gain" 
-                action="generic /sys/kernel/sound_control/gpl_headphone_pa_gain"
-                unit="" min="10" reversed="false" step="1" max="30"/>
+		<seekBar description="Headphone PowerAmp gain. Default: 15" 
+				name="Headphone PA gain" 
+				action="generic_double /sys/kernel/sound_control_3/gpl_headphone_pa_gain"
+				unit="" min="1" reversed="false" step="1" max="30"/>
 
-      <seekBar  description="Speaker gain. Default: 40" 
-                name="Speaker gain" 
-                action="generic /sys/kernel/sound_control/gpl_speaker_gain"
-                unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="Speaker gain. Default: 30" 
+				name="Speaker gain" 
+				action="generic_double /sys/kernel/sound_control_3/gpl_speaker_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
 
-      <seekBar  description="HDMI Speaker gain. Default: 40" 
-                name="HDMI Speaker gain" 
-                action="generic /sys/kernel/sound_control/gpl_hdmi_spkr_gain"
-                unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="General Mic gain. Default: 30" 
+				name="General Mic gain" 
+				action="generic /sys/kernel/sound_control_3/gpl_mic_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
 
-      <seekBar  description="General Mic gain. Default: 40" 
-                name="General Mic gain" 
-                action="generic /sys/kernel/sound_control/gpl_mic_gain"
-                unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="Camera Mic gain. Default: 30" 
+				name="Camera Mic gain" 
+				action="generic /sys/kernel/sound_control_3/gpl_cam_mic_gain"
+				unit="" min="1" reversed="false" step="1" max="60"/>
 
-      <seekBar  description="Camera Mic gain. Default: 40" 
-                name="Camera Mic gain" 
-                action="generic /sys/kernel/sound_control/gpl_cam_mic_gain"
-                unit="" min="20" reversed="false" step="1" max="60"/>
+	</settingsPane>
 
-      <seekBar  description="Headset Mic gain. Default: 40" 
-                name="Headset Mic gain" 
-                action="generic /sys/kernel/sound_control/gpl_headset_mic_gain"
-                unit="" min="20" reversed="false" step="1" max="60"/>
-
-    </settingsPane>
-  </settingsTab>
+</settingsTab>
         
   <settingsTab name="Charge">
 
@@ -382,6 +306,7 @@ cat << ENDCONFIG
              <spinnerItem name="700 mA" value="700"/> 
              <spinnerItem name="1000 mA" value="1000"/> 
        </spinner>
+
       <spinner description="AC charge current (default 1450 mA)" 
                name="AC Charge" 
                action="generic /sys/kernel/fast_charge/ac_charge_level">"
@@ -389,6 +314,16 @@ cat << ENDCONFIG
              <spinnerItem name="1450 mA" value="1450"/> 
              <spinnerItem name="1900 mA" value="1900"/> 
        </spinner>
+
+      <checkbox description="If you disable this, the charger can charge with 2.1 A/h. PAY ATTENTION"
+                name="Enable/Disable Failsafe" 
+                action="generic01 /sys/kernel/fast_charge/failsafe" 
+                label="Enable Failsafe"/>
+
+      <checkbox description="If you disable this, the charger will charge with full speed, even if screen is on" 
+                name="Enable/Disable Screen Limit" 
+                action="generic01 /sys/kernel/fast_charge/screen_on_current_limit" 
+                label="Enable charging limit while screen is on"/>
 	      
     </settingsPane>
   </settingsTab>
@@ -447,6 +382,11 @@ cat << ENDCONFIG
                 name="Enable/Disable Android Logger" 
                 action="generic01 /sys/kernel/logger_mode/logger_mode" 
                 label="Enable Android logger"/>
+
+		<spinner description="Allows you to change your SELinux (Security-Enhanced Linux) Status from Enforcing (policy is enforced) to Permissive (prints warnings instead of enforcing)." name="SeLinux Control" action="selinux_control">
+			<spinnerItem name="Enforcing" value="on"/> 
+			<spinnerItem name="Permissive" value="off"/> 
+		</spinner>
     
       <checkbox description="Sched Autogroup" name="Enable/Disable Sched Autogroup" action="generic01 /proc/sys/kernel/sched_autogroup_enabled" label="Sched Autogroup"/>      
       
