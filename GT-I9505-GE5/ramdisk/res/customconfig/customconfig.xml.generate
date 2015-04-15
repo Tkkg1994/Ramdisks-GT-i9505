@@ -253,29 +253,28 @@ cat << ENDCONFIG
       
 		<seekBar description="Headphone gain. Default: 30" 
 				name="Headphone gain" 
-				action="generic_double /sys/kernel/sound_control_3/gpl_headphone_gain"
+				action="generic /sys/kernel/sound_control/gpl_headphone_gain"
 				unit="" min="1" reversed="false" step="1" max="60"/>
 
 		<seekBar description="Headphone PowerAmp gain. Default: 15" 
 				name="Headphone PA gain" 
-				action="generic_double /sys/kernel/sound_control_3/gpl_headphone_pa_gain"
+				action="generic /sys/kernel/sound_control/gpl_headphone_pa_gain"
 				unit="" min="1" reversed="false" step="1" max="30"/>
 
 		<seekBar description="Speaker gain. Default: 30" 
 				name="Speaker gain" 
-				action="generic_double /sys/kernel/sound_control_3/gpl_speaker_gain"
+				action="generic /sys/kernel/sound_control/gpl_speaker_gain"
 				unit="" min="1" reversed="false" step="1" max="60"/>
 
 		<seekBar description="General Mic gain. Default: 30" 
 				name="General Mic gain" 
-				action="generic /sys/kernel/sound_control_3/gpl_mic_gain"
+				action="generic /sys/kernel/sound_control/gpl_mic_gain"
 				unit="" min="1" reversed="false" step="1" max="60"/>
 
 		<seekBar description="Camera Mic gain. Default: 30" 
 				name="Camera Mic gain" 
-				action="generic /sys/kernel/sound_control_3/gpl_cam_mic_gain"
+				action="generic /sys/kernel/sound_control/gpl_cam_mic_gain"
 				unit="" min="1" reversed="false" step="1" max="60"/>
-
 	</settingsPane>
 
 </settingsTab>

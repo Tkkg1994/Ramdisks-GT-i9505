@@ -275,12 +275,6 @@ cat << ENDCONFIG
 				name="Camera Mic gain" 
 				action="generic /sys/kernel/sound_control/gpl_cam_mic_gain"
 				unit="" min="1" reversed="false" step="1" max="60"/>
-
-		<seekBar  description="Headset Mic gain. Default: 30" 
-				name="Headset Mic gain" 
-				action="generic /sys/kernel/sound_control/gpl_headset_mic_gain"
-				unit="" min="1" reversed="false" step="1" max="60"/>
-
 	</settingsPane>
 
 </settingsTab>
