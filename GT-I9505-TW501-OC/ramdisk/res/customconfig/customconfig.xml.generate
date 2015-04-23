@@ -33,23 +33,29 @@ cat << ENDCONFIG
                 label="Disable touch-boost for intelli-plug"/>
        
        <spinner description="This will set the default CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps." name="Default CPU Governor" action="cpugov /tmp/cpu_governor">
-             <spinnerItem name="OnDemand" value="ondemand"/> 
-             <spinnerItem name="Interactive" value="interactive"/> 
-             <spinnerItem name="Intelliactive" value="intelliactive"/> 
-             <spinnerItem name="Intellidemand" value="intellidemand"/> 
-             <spinnerItem name="Abyssplugv2" value="abyssplugv2"/> 
              <spinnerItem name="Abyssplug" value="abyssplug"/> 
+             <spinnerItem name="Abyssplugv2" value="abyssplugv2"/> 
              <spinnerItem name="Asswax" value="asswax"/> 
              <spinnerItem name="Badass" value="badass"/> 
-             <spinnerItem name="Dancedance" value="dancedance"/> 
-             <spinnerItem name="Nightmare" value="nightmare"/> 
-             <spinnerItem name="SmartassH3" value="smartassH3"/> 
-             <spinnerItem name="Wheatley" value="wheatley"/> 
-             <spinnerItem name="LionHeart" value="Lionheart"/> 
-             <spinnerItem name="Darkness" value="darkness"/> 
-             <spinnerItem name="Yankactive" value="yankactive"/> 
-             <spinnerItem name="Intellimm" value="intellimm"/> 
              <spinnerItem name="Conservative" value="conservative"/> 
+             <spinnerItem name="Dancedance" value="dancedance"/> 
+             <spinnerItem name="Darkness" value="darkness"/> 
+             <spinnerItem name="Intellimm" value="intellimm"/> 
+             <spinnerItem name="Intelliactive" value="intelliactive"/> 
+             <spinnerItem name="Intellidemand" value="intellidemand"/> 
+             <spinnerItem name="Impulse" value="impulse"/> 
+             <spinnerItem name="Interactive" value="interactive"/> 
+             <spinnerItem name="LionHeart" value="Lionheart"/> 
+             <spinnerItem name="Nightmare" value="nightmare"/> 
+             <spinnerItem name="OnDemand" value="ondemand"/> 
+             <spinnerItem name="Performance" value="performance"/> 
+             <spinnerItem name="Powersave" value="powersave"/> 
+             <spinnerItem name="PegasusQ" value="pegasusq"/> 
+             <spinnerItem name="SmartassH3" value="smartassH3"/> 
+             <spinnerItem name="Smartmax" value="smartmax"/> 
+             <spinnerItem name="Userspace" value="userspace"/> 
+             <spinnerItem name="Wheatley" value="wheatley"/> 
+             <spinnerItem name="Yankactive" value="yankactive"/> 
        </spinner>
        
       <spinner description="Set the maximum frequency the CPU scales up to. Default: 1890 MHz." 
@@ -333,16 +339,18 @@ cat << ENDCONFIG
                   description="I/O settings">
                   
       <spinner description="This will set the default I/O scheduler for Internal Storage. Default: cfq" name="Default I/O Scheduler for Internal Storage" action="iosched_int /tmp/int_scheduler">
-             <spinnerItem name="cfq" value="cfq"/>
-             <spinnerItem name="bfq" value="bfq"/>
-             <spinnerItem name="fiops" value="fiops"/>
-             <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="bfq" value="bfq"/> 
+             <spinnerItem name="cfq" value="cfq"/> 
              <spinnerItem name="deadline" value="deadline"/> 
-             <spinnerItem name="sio" value="sio"/> 
-             <spinnerItem name="vr" value="vr"/> 
              <spinnerItem name="fifo" value="fifo"/> 
-             <spinnerItem name="zen" value="zen"/> 
+             <spinnerItem name="fiops" value="fiops"/> 
+             <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
+             <spinnerItem name="test" value="test"/> 
+             <spinnerItem name="tripndroid" value="tripndroid"/> 
+             <spinnerItem name="vr" value="vr"/> 
+             <spinnerItem name="zen" value="zen"/> 
       </spinner>
       <seekBar  description="The read-ahead value for the internal storage. Default: 128" 
                 name="Internal storage read-ahead" 
@@ -350,16 +358,18 @@ cat << ENDCONFIG
                 unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
 <spinner description="This will set the default I/O scheduler for the external Storage. Default: cfq" name="Default I/O Scheduler for SD-Card Storage" action="iosched_ext /tmp/ext_scheduler">
-             <spinnerItem name="cfq" value="cfq"/>
-             <spinnerItem name="bfq" value="bfq"/>
+             <spinnerItem name="bfq" value="bfq"/> 
+             <spinnerItem name="cfq" value="cfq"/> 
+             <spinnerItem name="deadline" value="deadline"/> 
+             <spinnerItem name="fifo" value="fifo"/> 
              <spinnerItem name="fiops" value="fiops"/> 
              <spinnerItem name="noop" value="noop"/> 
-             <spinnerItem name="deadline" value="deadline"/> 
              <spinnerItem name="sio" value="sio"/> 
-             <spinnerItem name="vr" value="vr"/> 
-             <spinnerItem name="fifo" value="fifo"/> 
-             <spinnerItem name="zen" value="zen"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
+             <spinnerItem name="test" value="test"/> 
+             <spinnerItem name="tripndroid" value="tripndroid"/> 
+             <spinnerItem name="vr" value="vr"/> 
+             <spinnerItem name="zen" value="zen"/> 
       </spinner>
 
       <seekBar  description="The read-ahead value for the external storage (SD-Card). Default: 256" 
@@ -394,19 +404,19 @@ cat << ENDCONFIG
       <checkbox description="KSM deferred timers" name="Enable/Disable KSM deferred timers" action="generic01 /sys/kernel/mm/ksm/deferred_timer" label="KSM deferred timers"/>      
       
       <spinner description="TCP congestion control method. Default: cubic" name="TCP congestion control method" action="generic /proc/sys/net/ipv4/tcp_congestion_control">
-             <spinnerItem name="cubic" value="cubic"/>
-             <spinnerItem name="westwood" value="westwood"/>
-             <spinnerItem name="bic" value="bic"/> 
-             <spinnerItem name="htcp" value="htcp"/> 
-             <spinnerItem name="highspeed" value="hstcp"/> 
-             <spinnerItem name="hybla" value="hybla"/> 
 	     <spinnerItem name="advanced" value="advanced"/> 
-	     <spinnerItem name="vegas" value="vegas"/> 
-	     <spinnerItem name="scalable" value="scalable"/> 
-	     <spinnerItem name="lp" value="lp"/> 
-	     <spinnerItem name="veno" value="veno"/> 
-	     <spinnerItem name="yeah" value="yeah"/> 
+             <spinnerItem name="bic" value="bic"/> 
+             <spinnerItem name="cubic" value="cubic"/>
+             <spinnerItem name="highspeed" value="hstcp"/> 
+             <spinnerItem name="htcp" value="htcp"/> 
+             <spinnerItem name="hybla" value="hybla"/> 
 	     <spinnerItem name="illinois" value="illinois"/> 
+	     <spinnerItem name="lp" value="lp"/> 
+	     <spinnerItem name="scalable" value="scalable"/> 
+	     <spinnerItem name="vegas" value="vegas"/> 
+	     <spinnerItem name="veno" value="veno"/> 
+             <spinnerItem name="westwood" value="westwood"/>
+	     <spinnerItem name="yeah" value="yeah"/> 
       </spinner>
       
       <checkbox description="Enable or Disable ZRAM (needs reboot). Default: on" name="Sammy ZRAM" action="generic01 /tmp/sammyzram" label="Sammy ZRAM"/>      
