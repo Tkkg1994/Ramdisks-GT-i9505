@@ -1,0 +1,14 @@
+/bin
+/CM12/bin
+/CM12.1/bin
+/CM12-OC/bin
+/TW/bin
+/TW-OC/bin
+/TW444/bin
+/TW444-OC/bin
+/TW501/bin
+/TW501-OC/bin
+*.txt
+*.sh
+*.img
+/CM12/split_img
