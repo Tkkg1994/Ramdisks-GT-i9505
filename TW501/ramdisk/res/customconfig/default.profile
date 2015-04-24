@@ -71,4 +71,4 @@ sched_autogroup_enabled=off
 run=off
 deferred_timer=off
 arch_power=off
-minfree=2048,4096,8192,16384,24576,32768
+minfree=1024,2048,4096,8192,12288,16384
