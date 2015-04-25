@@ -22,6 +22,7 @@ gpl_headphone_pa_gain=15
 gpl_speaker_gain=30
 gpl_mic_gain=30
 gpl_cam_mic_gain=30
+gpl_headset_mic_gain=30
 led_lowpower_current=40
 led_highpower_current=40
 led_fade_in_time=1
