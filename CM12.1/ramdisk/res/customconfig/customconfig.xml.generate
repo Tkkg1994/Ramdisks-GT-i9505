@@ -99,7 +99,7 @@ cat << ENDCONFIG
        </spinner>
        
     </settingsPane>
-    
+
 	<settingsPane description="CPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="CPU Voltage Control">
 
       <checkbox description="Enable/Disable CPU Voltage Control." name="CPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_CPU" label="CPU Voltage Control Switch"/>
@@ -296,6 +296,7 @@ cat << ENDCONFIG
              <spinnerItem name="700 mA" value="700"/> 
              <spinnerItem name="1000 mA" value="1000"/> 
        </spinner>
+
       <spinner description="AC charge current (default 1450 mA)" 
                name="AC Charge" 
                action="generic /sys/kernel/fast_charge/ac_charge_level">"
@@ -375,7 +376,7 @@ cat << ENDCONFIG
                 name="Enable/Disable Android Logger" 
                 action="generic01 /sys/kernel/logger_mode/logger_mode" 
                 label="Enable Android logger"/>
-    
+
       <checkbox description="Sched Autogroup" name="Enable/Disable Sched Autogroup" action="generic01 /proc/sys/kernel/sched_autogroup_enabled" label="Sched Autogroup"/>      
       
       <checkbox description="KSM (Kernel Samepage Merging)" name="Enable/Disable KSM" action="generic01 /sys/kernel/mm/ksm/run" label="KSM"/>      
