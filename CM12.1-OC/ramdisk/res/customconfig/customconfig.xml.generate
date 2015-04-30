@@ -137,7 +137,7 @@ cat << ENDCONFIG
 
     <settingsPane description="Poll interval" name="Poll interval">
       <seekBar description="Poll interval (ms)" 
-		name="Poll interval. Default: 150ms" action="generic /sys/module/msm_thermal/parameters/poll_ms" unit="ms" min="50" reversed="false" step="50" max="1000"/>
+		name="Poll interval. Default: 250ms" action="generic /sys/module/msm_thermal/parameters/poll_ms" unit="ms" min="50" reversed="false" step="50" max="1000"/>
 
     </settingsPane>
 
@@ -145,10 +145,10 @@ cat << ENDCONFIG
 	      description="Temperature limit control">
 
       <seekBar description="Temperature limit for cores (°C)" 
-		name="Core Temp. Limit (80°C)" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="100"/>
+		name="Core Temp. Limit (90°C)" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="100"/>
 
       <seekBar description="Temperature limit for device (°C)" 
-		name="Checkes the temp. for the whole device (70°C)" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="90"/>
+		name="Checkes the temp. for the whole device (80°C)" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="90"/>
 
     </settingsPane>
 
@@ -337,6 +337,7 @@ cat << ENDCONFIG
              <spinnerItem name="noop" value="noop"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="test" value="test"/> 
              <spinnerItem name="tripndroid" value="tripndroid"/> 
              <spinnerItem name="vr" value="vr"/> 
@@ -356,6 +357,7 @@ cat << ENDCONFIG
              <spinnerItem name="noop" value="noop"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="test" value="test"/> 
              <spinnerItem name="tripndroid" value="tripndroid"/> 
              <spinnerItem name="vr" value="vr"/> 
