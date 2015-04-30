@@ -332,6 +332,7 @@ cat << ENDCONFIG
              <spinnerItem name="noop" value="noop"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="test" value="test"/> 
              <spinnerItem name="tripndroid" value="tripndroid"/> 
              <spinnerItem name="vr" value="vr"/> 
@@ -351,6 +352,7 @@ cat << ENDCONFIG
              <spinnerItem name="noop" value="noop"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="test" value="test"/> 
              <spinnerItem name="tripndroid" value="tripndroid"/> 
              <spinnerItem name="vr" value="vr"/> 

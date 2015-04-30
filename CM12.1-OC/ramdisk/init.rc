@@ -655,7 +655,8 @@ service pre-recovery /system/bin/uncrypt
     disabled
     oneshot
 
-service post-init /sbin/googymax3_post_boot.sh
+service post-boot /sbin/googymax3_post_boot.sh
     class core
     user root
     oneshot
+

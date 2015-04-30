@@ -345,6 +345,7 @@ cat << ENDCONFIG
              <spinnerItem name="fifo" value="fifo"/> 
              <spinnerItem name="fiops" value="fiops"/> 
              <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
              <spinnerItem name="test" value="test"/> 
@@ -364,6 +365,7 @@ cat << ENDCONFIG
              <spinnerItem name="fifo" value="fifo"/> 
              <spinnerItem name="fiops" value="fiops"/> 
              <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
              <spinnerItem name="test" value="test"/> 
