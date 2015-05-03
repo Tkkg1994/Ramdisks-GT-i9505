@@ -188,6 +188,10 @@ service ipsec-daemon /system/bin/IPSecService
 
 ## WTL_EDM_START
 ## EDM AuditLog
+
+# Increase min_free_kbytes from 2755 to 5120
+    write /proc/sys/vm/min_free_kbytes 5120
+	
 service edmaudit /system/bin/edmaudit
     class main
     user root

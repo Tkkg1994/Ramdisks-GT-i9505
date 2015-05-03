@@ -122,10 +122,10 @@ echo "1890000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 echo "1890000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
 echo "1890000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
 echo "1890000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
-echo "384000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-echo "384000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
-echo "384000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
-echo "384000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
  
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
@@ -263,7 +263,11 @@ fi
 
 if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 
-	newvolt17=$(( $(grep 384000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT17) ))
+	newvolt21=$(( $(grep 81000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT21) ))
+	newvolt20=$(( $(grep 135000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT20) ))
+	newvolt19=$(( $(grep 189000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT19) ))
+	newvolt18=$(( $(grep 270000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT18) ))
+	newvolt17=$(( $(grep 378000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT17) ))
 	newvolt16=$(( $(grep 486000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT16) ))
 	newvolt15=$(( $(grep 594000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
 	newvolt14=$(( $(grep 702000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
@@ -281,7 +285,11 @@ if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 	newvolt2=$(( $(grep 1998000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT2) ))
 	newvolt1=$(( $(grep 2106000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT1) ))
 
-	echo "384000 $newvolt17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "81000 $newvolt21" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "135000 $newvolt20" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "189000 $newvolt19" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "270000 $newvolt18" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "378000 $newvolt17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "486000 $newvolt16" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "594000 $newvolt15" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "702000 $newvolt14" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
