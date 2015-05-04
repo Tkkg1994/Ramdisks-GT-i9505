@@ -18,6 +18,7 @@ cat << ENDCONFIG
        <spinner description="This will set the default CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps." name="Default CPU Governor" action="cpugov /tmp/cpu_governor">
              <spinnerItem name="Abyssplug" value="abyssplug"/> 
              <spinnerItem name="Abyssplugv2" value="abyssplugv2"/> 
+             <spinnerItem name="Alucard" value="alucard"/> 
              <spinnerItem name="Asswax" value="asswax"/> 
              <spinnerItem name="Badass" value="badass"/> 
              <spinnerItem name="Conservative" value="conservative"/> 
@@ -383,7 +384,7 @@ cat << ENDCONFIG
                 name="Enable/Disable Screen Limit" 
                 action="generic01 /sys/kernel/fast_charge/screen_on_current_limit" 
                 label="Enable charging limit while screen is on"/>
-	      
+
     </settingsPane>
   </settingsTab>
     
