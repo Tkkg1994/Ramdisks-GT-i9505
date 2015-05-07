@@ -14,27 +14,11 @@ cat << ENDCONFIG
       
       <seekBar description="Sets the sched_mc value which changes the cpu scheduler behaviour for multi-cpu systems. 0 is kernel's default value which turns sched_mc off. Setting it to 1 means that the first core will be tried to be loaded more and setting it to 2 will bias task wake-ups to semi-idle cpu package for power savings. (default: 0)"
             name="sched_mc" action="generic /sys/devices/system/cpu/sched_mc_power_savings" unit="" min="0" reversed="false" step="1" max="2"/>
-            
-       <spinner description="Hotplug mechanism. Default: MPDecision" name="Hotplug mechanism" action="hotplug /tmp/hotplug">
-             <spinnerItem name="MPDecision" value="0"/> 
-             <spinnerItem name="Intelli-Plug" value="1"/> 
-       </spinner>
 
-       <spinner description="How many cores should be on at max? ONLY with intelli-plug" name="Intelli-Plug max possible cores" action="generic /sys/module/intelli_plug/parameters/nr_possible_cores">
-             <spinnerItem name="1" value="1"/> 
-             <spinnerItem name="2" value="2"/> 
-             <spinnerItem name="3" value="3"/> 
-             <spinnerItem name="4" value="4"/> 
-       </spinner>
-
-      <checkbox description="You can enable or disable intelli-touch-boost here. ONLY with intelli-plug" 
-                name="Disable Touchboost" 
-                action="generic01 /sys/module/intelli_plug/parameters/touch_boost_active" 
-                label="Disable touch-boost for intelli-plug"/>
-       
        <spinner description="This will set the default CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps." name="Default CPU Governor" action="cpugov /tmp/cpu_governor">
              <spinnerItem name="Abyssplug" value="abyssplug"/> 
              <spinnerItem name="Abyssplugv2" value="abyssplugv2"/> 
+             <spinnerItem name="Alucard" value="alucard"/> 
              <spinnerItem name="Asswax" value="asswax"/> 
              <spinnerItem name="Badass" value="badass"/> 
              <spinnerItem name="Conservative" value="conservative"/> 
@@ -52,6 +36,7 @@ cat << ENDCONFIG
              <spinnerItem name="Powersave" value="powersave"/> 
              <spinnerItem name="PegasusQ" value="pegasusq"/> 
              <spinnerItem name="SmartassH3" value="smartassH3"/> 
+             <spinnerItem name="SmartassV2" value="smartassV2"/> 
              <spinnerItem name="Smartmax" value="smartmax"/> 
              <spinnerItem name="Userspace" value="userspace"/> 
              <spinnerItem name="Wheatley" value="wheatley"/> 
@@ -77,13 +62,21 @@ cat << ENDCONFIG
              <spinnerItem name="702 MHz" value="702000"/> 
              <spinnerItem name="594 MHz" value="594000"/> 
              <spinnerItem name="486 MHz" value="486000"/> 
-             <spinnerItem name="384 MHz" value="384000"/> 
+             <spinnerItem name="378 MHz" value="378000"/> 
+             <spinnerItem name="270 MHz" value="270000"/> 
+             <spinnerItem name="189 MHz" value="189000"/> 
+             <spinnerItem name="135 MHz" value="135000"/> 
+             <spinnerItem name="81 MHz" value="81000"/> 
        </spinner>
        
-      <spinner description="Set the minimum frequency the CPU scales down to. Default: 384 MHz." 
+      <spinner description="Set the minimum frequency the CPU scales down to. Default: 378 MHz." 
                name="CPU min frequency" 
                action="cpuminfreq /tmp/scaling_min_freq">"
-             <spinnerItem name="384 MHz" value="384000"/> 
+             <spinnerItem name="81 MHz" value="81000"/> 
+             <spinnerItem name="135 MHz" value="135000"/> 
+             <spinnerItem name="189 MHz" value="189000"/> 
+             <spinnerItem name="270 MHz" value="270000"/> 
+             <spinnerItem name="378 MHz" value="378000"/> 
              <spinnerItem name="486 MHz" value="486000"/> 
              <spinnerItem name="594 MHz" value="594000"/> 
              <spinnerItem name="702 MHz" value="702000"/> 
@@ -103,33 +96,92 @@ cat << ENDCONFIG
        </spinner>
        
     </settingsPane>
-    
+
 	<settingsPane description="CPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="CPU Voltage Control">
 
       <checkbox description="Enable/Disable CPU Voltage Control." name="CPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_CPU" label="CPU Voltage Control Switch"/>
       
-		<seekBar description="Device default voltage for 2106 MHz: `grep 2106000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 2106 MHz" action="cpu-voltage 1" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1998 MHz: `grep 1998000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1998 MHz" action="cpu-voltage 2" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1890 MHz: `grep 1890000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1890 MHz" action="cpu-voltage 3" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1782 MHz: `grep 1782000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1782 MHz" action="cpu-voltage 4" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1674 MHz: `grep 1674000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1674 MHz" action="cpu-voltage 5" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1566 MHz: `grep 1566000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1566 MHz" action="cpu-voltage 6" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1458 MHz: `grep 1458000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1458 MHz" action="cpu-voltage 7" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1350 MHz: `grep 1350000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1350 MHz" action="cpu-voltage 8" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1242 MHz: `grep 1242000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1242 MHz" action="cpu-voltage 9" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1134 MHz: `grep 1134000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1134 MHz" action="cpu-voltage 10" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1026 MHz: `grep 1026000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1026 MHz" action="cpu-voltage 11" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 918 MHz: `grep 918000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 918 MHz" action="cpu-voltage 12" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 810 MHz: `grep 810000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 810 MHz" action="cpu-voltage 13" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 702 MHz: `grep 702000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 702 MHz" action="cpu-voltage 14" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 594 MHz: `grep 594000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 594 MHz" action="cpu-voltage 15" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 486 MHz: `grep 486000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 486 MHz" action="cpu-voltage 16" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 384 MHz: `grep 384000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 384 MHz" action="cpu-voltage 17" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 2106 MHz: `grep 2106000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 2106 MHz" action="cpu-voltage 1" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1998 MHz: `grep 1998000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1998 MHz" action="cpu-voltage 2" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1890 MHz: `grep 1890000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1890 MHz" action="cpu-voltage 3" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1782 MHz: `grep 1782000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1782 MHz" action="cpu-voltage 4" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1674 MHz: `grep 1674000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1674 MHz" action="cpu-voltage 5" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1566 MHz: `grep 1566000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1566 MHz" action="cpu-voltage 6" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1458 MHz: `grep 1458000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1458 MHz" action="cpu-voltage 7" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1350 MHz: `grep 1350000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1350 MHz" action="cpu-voltage 8" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1242 MHz: `grep 1242000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1242 MHz" action="cpu-voltage 9" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1134 MHz: `grep 1134000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1134 MHz" action="cpu-voltage 10" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1026 MHz: `grep 1026000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1026 MHz" action="cpu-voltage 11" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 918 MHz: `grep 918000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 918 MHz" action="cpu-voltage 12" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 810 MHz: `grep 810000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 810 MHz" action="cpu-voltage 13" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 702 MHz: `grep 702000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 702 MHz" action="cpu-voltage 14" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 594 MHz: `grep 594000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 594 MHz" action="cpu-voltage 15" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 486 MHz: `grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 486 MHz" action="cpu-voltage 16" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 378 MHz: `grep 378000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 378 MHz" action="cpu-voltage 17" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 270 MHz: `grep 270000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 270 MHz" action="cpu-voltage 18" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
 
 	</settingsPane>
 
   </settingsTab>
- 
+
+<settingsTab name="Intelli-Plug">
+
+	<settingsPane name="Intelli-Plug" description="Tab for Intelli-Plug mechanism, only changes something if intelli-plug is ON! With MPDecision, this will not work.">		
+      
+       <spinner description="Hotplug mechanism. Default: MPDecision" name="Hotplug mechanism" action="hotplug /tmp/hotplug">
+             <spinnerItem name="MPDecision" value="0"/> 
+             <spinnerItem name="Intelli-Plug" value="1"/> 
+       </spinner>
+
+<spinner description="Here you can select different profiles for intelli-plug" name="Intelli-Plug profiles" action="generic /sys/module/intelli_plug/parameters/nr_run_profile_sel">
+             <spinnerItem name="Balanced" value="0"/> 
+             <spinnerItem name="Performance" value="1"/> 
+             <spinnerItem name="Conservative" value="2"/> 
+             <spinnerItem name="Eco Performance" value="3"/> 
+             <spinnerItem name="Eco Conservative" value="4"/> 
+       </spinner>
+
+       <spinner description="How many cores should be on at max? ONLY with intelli-plug" name="Intelli-Plug max possible cores" action="generic /sys/module/intelli_plug/parameters/nr_possible_cores">
+             <spinnerItem name="1" value="1"/> 
+             <spinnerItem name="2" value="2"/> 
+             <spinnerItem name="3" value="3"/> 
+             <spinnerItem name="4" value="4"/> 
+       </spinner>
+
+<spinner description="Screen off max frequency" name="Scren off max freq" action="generic /sys/module/intelli_plug/parameters/screen_off_max">
+             <spinnerItem name="disabled" value="4294967295"/> 
+             <spinnerItem name="81 MHz" value="81000"/> 
+             <spinnerItem name="135 MHz" value="135000"/> 
+             <spinnerItem name="189 MHz" value="189000"/> 
+             <spinnerItem name="270 MHz" value="270000"/> 
+             <spinnerItem name="378 MHz" value="378000"/> 
+             <spinnerItem name="486 MHz" value="486000"/> 
+             <spinnerItem name="594 MHz" value="594000"/> 
+             <spinnerItem name="702 MHz" value="702000"/> 
+             <spinnerItem name="810 MHz" value="810000"/> 
+             <spinnerItem name="918 MHz" value="918000"/> 
+             <spinnerItem name="1026 MHz" value="1026000"/> 
+             <spinnerItem name="1134 MHz" value="1134000"/> 
+             <spinnerItem name="1242 MHz" value="1242000"/> 
+             <spinnerItem name="1350 MHz" value="1350000"/> 
+             <spinnerItem name="1458 MHz" value="1458000"/> 
+             <spinnerItem name="1566 MHz" value="1566000"/> 
+             <spinnerItem name="1674 MHz" value="1674000"/> 
+             <spinnerItem name="1782 MHz" value="1782000"/> 
+             <spinnerItem name="1890 MHz" value="1890000"/> 
+             <spinnerItem name="1998 MHz" value="1998000"/> 
+             <spinnerItem name="2106 MHz" value="2106000"/> 
+       </spinner>
+
+      <checkbox description="You can enable or disable intelli-touch-boost here. ONLY with intelli-plug" 
+                name="Disable Touchboost" 
+                action="generic01 /sys/module/intelli_plug/parameters/touch_boost_active" 
+                label="Disable touch-boost for intelli-plug"/>
+
+	</settingsPane>
+
+</settingsTab>
+
   <settingsTab name="THERMAL">
 
     <settingsPane name="Thermal Control"
@@ -137,7 +189,7 @@ cat << ENDCONFIG
 
     <settingsPane description="Poll interval" name="Poll interval">
       <seekBar description="Poll interval (ms)" 
-		name="Poll interval. Default: 150ms" action="generic /sys/module/msm_thermal/parameters/poll_ms" unit="ms" min="50" reversed="false" step="50" max="1000"/>
+		name="Poll interval. Default: 250ms" action="generic /sys/module/msm_thermal/parameters/poll_ms" unit="ms" min="50" reversed="false" step="50" max="1000"/>
 
     </settingsPane>
 
@@ -145,10 +197,10 @@ cat << ENDCONFIG
 	      description="Temperature limit control">
 
       <seekBar description="Temperature limit for cores (°C)" 
-		name="Core Temp. Limit (80°C)" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="100"/>
+		name="Core Temp. Limit (90°C)" action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="120"/>
 
       <seekBar description="Temperature limit for device (°C)" 
-		name="Checkes the temp. for the whole device (70°C)" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="90"/>
+		name="Checkes the temp. for the whole device (80°C)" action="generic /sys/module/msm_thermal/parameters/limit_temp_degC" unit="°C" min="60" reversed="false" step="1" max="110"/>
 
     </settingsPane>
 
@@ -183,11 +235,11 @@ cat << ENDCONFIG
     
       <checkbox description="Enable/Disable GPU Voltage Control." name="GPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_GPU" label="GPU Voltage Control Switch"/>
 
-      <seekBar description="Device default voltage for Level1: `sed -n '1p' /data/.googymax3/GPU_mV_table.ggy` µV" 
+      <seekBar description="Device default voltage for Level1: `sed -n '1p' /data/.hulk/GPU_mV_table.ggy` µV" 
 		name="GPU Voltage delta Level1." action="gpu-voltage 1" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-      <seekBar description="Device default voltage for Level2: `sed -n '2p' /data/.googymax3/GPU_mV_table.ggy` µV" 
+      <seekBar description="Device default voltage for Level2: `sed -n '2p' /data/.hulk/GPU_mV_table.ggy` µV" 
 		name="GPU Voltage delta Level2." action="gpu-voltage 2" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-      <seekBar description="Device default voltage for Level3: `sed -n '3p' /data/.googymax3/GPU_mV_table.ggy` µV" 
+      <seekBar description="Device default voltage for Level3: `sed -n '3p' /data/.hulk/GPU_mV_table.ggy` µV" 
 		name="GPU Voltage delta Level3." action="gpu-voltage 3" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
     </settingsPane>
 
@@ -254,30 +306,30 @@ cat << ENDCONFIG
 
 	<settingsPane name="Sound Control" description="Sound Control">		
       
-		<seekBar description="Headphone gain. Default: 30" 
+		<seekBar description="Headphone gain. Default: 40" 
 				name="Headphone gain" 
 				action="generic /sys/kernel/sound_control/gpl_headphone_gain"
-				unit="" min="1" reversed="false" step="1" max="60"/>
+				unit="" min="0" reversed="false" step="1" max="80"/>
 
-		<seekBar description="Headphone PowerAmp gain. Default: 15" 
+		<seekBar description="Headphone PowerAmp gain. Default: 20" 
 				name="Headphone PA gain" 
 				action="generic /sys/kernel/sound_control/gpl_headphone_pa_gain"
-				unit="" min="1" reversed="false" step="1" max="30"/>
+				unit="" min="0" reversed="false" step="1" max="40"/>
 
-		<seekBar description="Speaker gain. Default: 30" 
+		<seekBar description="Speaker gain. Default: 40" 
 				name="Speaker gain" 
 				action="generic /sys/kernel/sound_control/gpl_speaker_gain"
-				unit="" min="1" reversed="false" step="1" max="60"/>
+				unit="" min="0" reversed="false" step="1" max="80"/>
 
-		<seekBar description="General Mic gain. Default: 30" 
+		<seekBar description="General Mic gain. Default: 40" 
 				name="General Mic gain" 
 				action="generic /sys/kernel/sound_control/gpl_mic_gain"
-				unit="" min="1" reversed="false" step="1" max="60"/>
+				unit="" min="0" reversed="false" step="1" max="80"/>
 
-		<seekBar description="Camera Mic gain. Default: 30" 
+		<seekBar description="Camera Mic gain. Default: 40" 
 				name="Camera Mic gain" 
 				action="generic /sys/kernel/sound_control/gpl_cam_mic_gain"
-				unit="" min="1" reversed="false" step="1" max="60"/>
+				unit="" min="0" reversed="false" step="1" max="80"/>
 	</settingsPane>
 
 </settingsTab>
@@ -302,6 +354,7 @@ cat << ENDCONFIG
              <spinnerItem name="700 mA" value="700"/> 
              <spinnerItem name="1000 mA" value="1000"/> 
        </spinner>
+
       <spinner description="AC charge current (default 1450 mA)" 
                name="AC Charge" 
                action="generic /sys/kernel/fast_charge/ac_charge_level">"
@@ -328,13 +381,14 @@ cat << ENDCONFIG
    <settingsPane name="I/O settings" 
                   description="I/O settings">
                   
-      <spinner description="This will set the default I/O scheduler for Internal Storage. Default: cfq" name="Default I/O Scheduler for Internal Storage" action="iosched_int /tmp/int_scheduler">
+      <spinner description="This will set the default I/O scheduler for Internal Storage. Default: row" name="Default I/O Scheduler for Internal Storage" action="iosched_int /tmp/int_scheduler">
              <spinnerItem name="bfq" value="bfq"/> 
              <spinnerItem name="cfq" value="cfq"/> 
              <spinnerItem name="deadline" value="deadline"/> 
              <spinnerItem name="fifo" value="fifo"/> 
              <spinnerItem name="fiops" value="fiops"/> 
              <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
              <spinnerItem name="test" value="test"/> 
@@ -347,13 +401,14 @@ cat << ENDCONFIG
                 action="readahead_int /tmp/int_read_ahead_kb"
                 unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
-<spinner description="This will set the default I/O scheduler for the external Storage. Default: cfq" name="Default I/O Scheduler for SD-Card Storage" action="iosched_ext /tmp/ext_scheduler">
+<spinner description="This will set the default I/O scheduler for the external Storage. Default: row" name="Default I/O Scheduler for SD-Card Storage" action="iosched_ext /tmp/ext_scheduler">
              <spinnerItem name="bfq" value="bfq"/> 
              <spinnerItem name="cfq" value="cfq"/> 
              <spinnerItem name="deadline" value="deadline"/> 
              <spinnerItem name="fifo" value="fifo"/> 
              <spinnerItem name="fiops" value="fiops"/> 
              <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="row" value="row"/> 
              <spinnerItem name="sio" value="sio"/> 
              <spinnerItem name="sioplus" value="sioplus"/> 
              <spinnerItem name="test" value="test"/> 
@@ -381,7 +436,7 @@ cat << ENDCONFIG
                 name="Enable/Disable Android Logger" 
                 action="generic01 /sys/kernel/logger_mode/logger_mode" 
                 label="Enable Android logger"/>
-    
+
       <checkbox description="Sched Autogroup" name="Enable/Disable Sched Autogroup" action="generic01 /proc/sys/kernel/sched_autogroup_enabled" label="Sched Autogroup"/>      
       
       <checkbox description="KSM (Kernel Samepage Merging)" name="Enable/Disable KSM" action="generic01 /sys/kernel/mm/ksm/run" label="KSM"/>      

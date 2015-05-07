@@ -5,7 +5,7 @@ BB=/sbin/busybox
 # protect init from oom
 # echo "-1000" > /proc/1/oom_score_adj;
 # 
-# PIDOFINIT=$(pgrep -f "/sbin/ext/googymax3.sh");
+# PIDOFINIT=$(pgrep -f "/sbin/ext/hulk.sh");
 # for i in $PIDOFINIT; do
 # 	echo "-600" > /proc/"$i"/oom_score_adj;
 # done;
@@ -17,8 +17,8 @@ OPEN_RW()
 }
 OPEN_RW;
 
-# Boot with CFQ I/O Gov
-$BB echo "cfq" > /sys/block/mmcblk0/queue/scheduler;
+# Boot with row I/O Gov
+$BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
@@ -115,36 +115,36 @@ echo "1890000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 echo "1890000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
 echo "1890000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
 echo "1890000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
-echo "384000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-echo "384000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
-echo "384000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
-echo "384000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
+echo "378000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
 
-if [ ! -d /data/.googymax3 ]; then
-	$BB mkdir -p /data/.googymax3;
+if [ ! -d /data/.hulk ]; then
+	$BB mkdir -p /data/.hulk;
 fi;
 
-$BB chmod -R 0777 /data/.googymax3/;
+$BB chmod -R 0777 /data/.hulk/;
 
-$BB rm -f /data/.googymax3/vdd_levels.ggy;
-$BB cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels > /data/.googymax3/vdd_levels.ggy
+$BB rm -f /data/.hulk/vdd_levels.ggy;
+$BB cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels > /data/.hulk/vdd_levels.ggy
 
-$BB rm -f /data/.googymax3/GPU_mV_table.ggy;
-$BB cat /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table > /data/.googymax3/GPU_mV_table.ggy
+$BB rm -f /data/.hulk/GPU_mV_table.ggy;
+$BB cat /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table > /data/.hulk/GPU_mV_table.ggy
 
 . /res/customconfig/customconfig-helper;
 
 ccxmlsum=`md5sum /res/customconfig/customconfig.xml | awk '{print $1}'`
-if [ "a${ccxmlsum}" != "a`cat /data/.googymax3/.ccxmlsum`" ];
+if [ "a${ccxmlsum}" != "a`cat /data/.hulk/.ccxmlsum`" ];
 then
-   $BB rm -f /data/.googymax3/*.profile;
-   echo ${ccxmlsum} > /data/.googymax3/.ccxmlsum;
+   $BB rm -f /data/.hulk/*.profile;
+   echo ${ccxmlsum} > /data/.hulk/.ccxmlsum;
 fi;
 
-[ ! -f /data/.googymax3/default.profile ] && cp /res/customconfig/default.profile /data/.googymax3/default.profile;
-[ ! -f /data/.googymax3/battery.profile ] && cp /res/customconfig/battery.profile /data/.googymax3/battery.profile;
-[ ! -f /data/.googymax3/balanced.profile ] && cp /res/customconfig/balanced.profile /data/.googymax3/balanced.profile;
-[ ! -f /data/.googymax3/performance.profile ] && cp /res/customconfig/performance.profile /data/.googymax3/performance.profile;
+[ ! -f /data/.hulk/default.profile ] && cp /res/customconfig/default.profile /data/.hulk/default.profile;
+[ ! -f /data/.hulk/battery.profile ] && cp /res/customconfig/battery.profile /data/.hulk/battery.profile;
+[ ! -f /data/.hulk/balanced.profile ] && cp /res/customconfig/balanced.profile /data/.hulk/balanced.profile;
+[ ! -f /data/.hulk/performance.profile ] && cp /res/customconfig/performance.profile /data/.hulk/performance.profile;
 
 read_defaults;
 read_config;
@@ -237,25 +237,27 @@ fi
 
 if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 
-	newvolt17=$(( $(grep 384000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT17) ))
-	newvolt16=$(( $(grep 486000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT16) ))
-	newvolt15=$(( $(grep 594000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
-	newvolt14=$(( $(grep 702000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
-	newvolt13=$(( $(grep 810000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT13) ))
-	newvolt12=$(( $(grep 918000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
-	newvolt11=$(( $(grep 1026000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
-	newvolt10=$(( $(grep 1134000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT10) ))
-	newvolt9=$(( $(grep 1242000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT9) ))
-	newvolt8=$(( $(grep 1350000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT8) ))
-	newvolt7=$(( $(grep 1458000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT7) ))
-	newvolt6=$(( $(grep 1566000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT6) ))
-	newvolt5=$(( $(grep 1674000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT5) ))
-	newvolt4=$(( $(grep 1782000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT4) ))
-	newvolt3=$(( $(grep 1890000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT3) ))
-	newvolt2=$(( $(grep 1998000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT2) ))
-	newvolt1=$(( $(grep 2106000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT1) ))
+	newvolt18=$(( $(grep 270000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT18) ))
+	newvolt17=$(( $(grep 378000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT17) ))
+	newvolt16=$(( $(grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT16) ))
+	newvolt15=$(( $(grep 594000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
+	newvolt14=$(( $(grep 702000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
+	newvolt13=$(( $(grep 810000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT13) ))
+	newvolt12=$(( $(grep 918000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
+	newvolt11=$(( $(grep 1026000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
+	newvolt10=$(( $(grep 1134000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT10) ))
+	newvolt9=$(( $(grep 1242000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT9) ))
+	newvolt8=$(( $(grep 1350000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT8) ))
+	newvolt7=$(( $(grep 1458000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT7) ))
+	newvolt6=$(( $(grep 1566000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT6) ))
+	newvolt5=$(( $(grep 1674000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT5) ))
+	newvolt4=$(( $(grep 1782000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT4) ))
+	newvolt3=$(( $(grep 1890000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT3) ))
+	newvolt2=$(( $(grep 1998000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT2) ))
+	newvolt1=$(( $(grep 2106000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT1) ))
 
-	echo "384000 $newvolt17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "270000 $newvolt18" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "378000 $newvolt17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "486000 $newvolt16" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "594000 $newvolt15" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "702000 $newvolt14" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
@@ -279,9 +281,9 @@ fi
 
 if [ "$CONTROLSWITCH_GPU" == "on" ]; then
 
-	newvolt1=$(( $(sed -n '1p' /data/.googymax3/GPU_mV_table.ggy) + ($GPUVOLT1) ))
-	newvolt2=$(( $(sed -n '2p' /data/.googymax3/GPU_mV_table.ggy) + ($GPUVOLT2) ))
-	newvolt3=$(( $(sed -n '3p' /data/.googymax3/GPU_mV_table.ggy) + ($GPUVOLT3) ))
+	newvolt1=$(( $(sed -n '1p' /data/.hulk/GPU_mV_table.ggy) + ($GPUVOLT1) ))
+	newvolt2=$(( $(sed -n '2p' /data/.hulk/GPU_mV_table.ggy) + ($GPUVOLT2) ))
+	newvolt3=$(( $(sed -n '3p' /data/.hulk/GPU_mV_table.ggy) + ($GPUVOLT3) ))
 
 	echo "$newvolt1 $newvolt2 $newvolt3" > /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table	
 fi
@@ -347,4 +349,3 @@ fi;
 
 	# Fix critical perms again after init.d mess
 	CRITICAL_PERM_FIX;
-

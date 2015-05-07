@@ -101,27 +101,24 @@ cat << ENDCONFIG
 
       <checkbox description="Enable/Disable CPU Voltage Control." name="CPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_CPU" label="CPU Voltage Control Switch"/>
       
-		<seekBar description="Device default voltage for 2106 MHz: `grep 2106000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 2106 MHz" action="cpu-voltage 1" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1998 MHz: `grep 1998000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1998 MHz" action="cpu-voltage 2" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1890 MHz: `grep 1890000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1890 MHz" action="cpu-voltage 3" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1782 MHz: `grep 1782000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1782 MHz" action="cpu-voltage 4" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1674 MHz: `grep 1674000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1674 MHz" action="cpu-voltage 5" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1566 MHz: `grep 1566000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1566 MHz" action="cpu-voltage 6" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1458 MHz: `grep 1458000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1458 MHz" action="cpu-voltage 7" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1350 MHz: `grep 1350000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1350 MHz" action="cpu-voltage 8" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1242 MHz: `grep 1242000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1242 MHz" action="cpu-voltage 9" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1134 MHz: `grep 1134000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1134 MHz" action="cpu-voltage 10" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 1026 MHz: `grep 1026000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1026 MHz" action="cpu-voltage 11" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 918 MHz: `grep 918000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 918 MHz" action="cpu-voltage 12" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 810 MHz: `grep 810000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 810 MHz" action="cpu-voltage 13" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 702 MHz: `grep 702000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 702 MHz" action="cpu-voltage 14" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 594 MHz: `grep 594000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 594 MHz" action="cpu-voltage 15" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 486 MHz: `grep 486000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 486 MHz" action="cpu-voltage 16" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 378 MHz: `grep 378000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 378 MHz" action="cpu-voltage 17" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 270 MHz: `grep 270000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 270 MHz" action="cpu-voltage 18" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 189 MHz: `grep 189000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 189 MHz" action="cpu-voltage 19" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 135 MHz: `grep 135000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 135 MHz" action="cpu-voltage 20" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-		<seekBar description="Device default voltage for 81 MHz: `grep 81000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 81 MHz" action="cpu-voltage 21" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 2106 MHz: `grep 2106000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 2106 MHz" action="cpu-voltage 1" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1998 MHz: `grep 1998000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1998 MHz" action="cpu-voltage 2" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1890 MHz: `grep 1890000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1890 MHz" action="cpu-voltage 3" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1782 MHz: `grep 1782000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1782 MHz" action="cpu-voltage 4" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1674 MHz: `grep 1674000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1674 MHz" action="cpu-voltage 5" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1566 MHz: `grep 1566000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1566 MHz" action="cpu-voltage 6" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1458 MHz: `grep 1458000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1458 MHz" action="cpu-voltage 7" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1350 MHz: `grep 1350000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1350 MHz" action="cpu-voltage 8" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1242 MHz: `grep 1242000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1242 MHz" action="cpu-voltage 9" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1134 MHz: `grep 1134000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1134 MHz" action="cpu-voltage 10" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1026 MHz: `grep 1026000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 1026 MHz" action="cpu-voltage 11" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 918 MHz: `grep 918000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 918 MHz" action="cpu-voltage 12" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 810 MHz: `grep 810000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 810 MHz" action="cpu-voltage 13" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 702 MHz: `grep 702000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 702 MHz" action="cpu-voltage 14" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 594 MHz: `grep 594000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 594 MHz" action="cpu-voltage 15" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 486 MHz: `grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 486 MHz" action="cpu-voltage 16" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 378 MHz: `grep 378000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 378 MHz" action="cpu-voltage 17" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 270 MHz: `grep 270000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV" name="Voltage delta 270 MHz" action="cpu-voltage 18" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
 
 	</settingsPane>
 
@@ -238,11 +235,11 @@ cat << ENDCONFIG
     
       <checkbox description="Enable/Disable GPU Voltage Control." name="GPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_GPU" label="GPU Voltage Control Switch"/>
 
-      <seekBar description="Device default voltage for Level1: `sed -n '1p' /data/.googymax3/GPU_mV_table.ggy` µV" 
+      <seekBar description="Device default voltage for Level1: `sed -n '1p' /data/.hulk/GPU_mV_table.ggy` µV" 
 		name="GPU Voltage delta Level1." action="gpu-voltage 1" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-      <seekBar description="Device default voltage for Level2: `sed -n '2p' /data/.googymax3/GPU_mV_table.ggy` µV" 
+      <seekBar description="Device default voltage for Level2: `sed -n '2p' /data/.hulk/GPU_mV_table.ggy` µV" 
 		name="GPU Voltage delta Level2." action="gpu-voltage 2" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
-      <seekBar description="Device default voltage for Level3: `sed -n '3p' /data/.googymax3/GPU_mV_table.ggy` µV" 
+      <seekBar description="Device default voltage for Level3: `sed -n '3p' /data/.hulk/GPU_mV_table.ggy` µV" 
 		name="GPU Voltage delta Level3." action="gpu-voltage 3" unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
     </settingsPane>
 
@@ -393,7 +390,7 @@ cat << ENDCONFIG
    <settingsPane name="I/O settings" 
                   description="I/O settings">
                   
-      <spinner description="This will set the default I/O scheduler for Internal Storage. Default: cfq" name="Default I/O Scheduler for Internal Storage" action="iosched_int /tmp/int_scheduler">
+      <spinner description="This will set the default I/O scheduler for Internal Storage. Default: row" name="Default I/O Scheduler for Internal Storage" action="iosched_int /tmp/int_scheduler">
              <spinnerItem name="bfq" value="bfq"/> 
              <spinnerItem name="cfq" value="cfq"/> 
              <spinnerItem name="deadline" value="deadline"/> 
@@ -413,7 +410,7 @@ cat << ENDCONFIG
                 action="readahead_int /tmp/int_read_ahead_kb"
                 unit="kB" min="128" reversed="false" step="128" max="4096"/>
 
-<spinner description="This will set the default I/O scheduler for the external Storage. Default: cfq" name="Default I/O Scheduler for SD-Card Storage" action="iosched_ext /tmp/ext_scheduler">
+<spinner description="This will set the default I/O scheduler for the external Storage. Default: row" name="Default I/O Scheduler for SD-Card Storage" action="iosched_ext /tmp/ext_scheduler">
              <spinnerItem name="bfq" value="bfq"/> 
              <spinnerItem name="cfq" value="cfq"/> 
              <spinnerItem name="deadline" value="deadline"/> 
