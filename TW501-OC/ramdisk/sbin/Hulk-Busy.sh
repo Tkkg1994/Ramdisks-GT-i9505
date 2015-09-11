@@ -1,19 +1,16 @@
 #!/sbin/busybox sh
 
+# Kernel Tuning Script by Tkkg with a very big thanks to Dorimanx.
+
 BB=/sbin/busybox
 
 # protect init from oom
-# echo "-1000" > /proc/1/oom_score_adj;
-# 
-# PIDOFINIT=$(pgrep -f "/sbin/ext/hulk.sh");
-# for i in $PIDOFINIT; do
-# 	echo "-600" > /proc/"$i"/oom_score_adj;
-# done;
+echo "-1000" > /proc/1/oom_score_adj;
 
 OPEN_RW()
 {
-        $BB mount -o remount,rw /;
-        $BB mount -o remount,rw /system;
+	$BB mount -o remount,rw /;
+	$BB mount -o remount,rw /system;
 }
 OPEN_RW;
 
@@ -28,6 +25,12 @@ OPEN_RW;
 
 # Boot with row I/O Gov
 $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
+
+# Move Kernel Log to log normal storage
+$BB mkdir /sdcard/log/;
+$BB chmod 770 /sdcard/log/;
+$BB mv /proc/last_kmsg /sdcard/log/;
+$BB mv /sdcard/log/last_kmsg /sdcard/log/last_kmsg.txt;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
@@ -54,10 +57,11 @@ OPEN_RW;
 
 # some nice thing for dev
 if [ ! -e /cpufreq ]; then
-	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
+	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq/ /cpufreq;
 	$BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
 	$BB ln -s /sys/module/msm_thermal/parameters/ /cputemp;
-	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli;
+	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli_plug;
+	$BB ln -s /sys/module/msm_hotplug/ /hotplugs/msm_hotplug;
 	$BB ln -s /sys/module/msm_mpdecision/ /hotplugs/msm_mpdecision;
 	$BB ln -s /sys/devices/system/cpu/cpufreq/all_cpus/ /all_cpus;
 fi;
@@ -80,7 +84,7 @@ CRITICAL_PERM_FIX()
 	$BB chmod -R 06755 /sbin/ext/;
 	$BB chmod -R 0777 /data/anr/;
 	$BB chmod -R 0400 /data/tombstones;
-	$BB chmod 06755 /sbin/busybox;
+	$BB chmod 06755 /sbin/busybox
 }
 CRITICAL_PERM_FIX;
 
@@ -91,19 +95,33 @@ $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
 
 # make sure we own the device nodes
 $BB chown system /sys/devices/system/cpu/cpu0/cpufreq/*
+$BB chown system /sys/devices/system/cpu/cpu1/cpufreq/*
+$BB chown system /sys/devices/system/cpu/cpu2/cpufreq/*
+$BB chown system /sys/devices/system/cpu/cpu3/cpufreq/*
 $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
 $BB chown system /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+$BB chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+$BB chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+$BB chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+$BB chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
+$BB chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
+$BB chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+$BB chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
+$BB chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
+$BB chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
+$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu1/online
 $BB chmod 666 /sys/devices/system/cpu/cpu2/online
 $BB chmod 666 /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/module/msm_thermal/parameters/*
 $BB chmod 666 /sys/module/msm_thermal/core_control/enabled
+$BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
@@ -162,70 +180,26 @@ fi;
 read_defaults;
 read_config;
 
-# zram
-if [ "$sammyzram" == "on" ];then
- if [ -f /system/bin/rtccd3 ]; then
-  UNIT="M"
-  /system/bin/rtccd3 -a "$zramdisksize$UNIT"
-  echo "1" > /data/.hulk/zram.ggy
- else
- if [ -f /system/bin/rtccd2 ]; then
-  UNIT="M"
-  /system/bin/rtccd2 -a "$zramdisksize$UNIT"
-  echo "3" > /data/.hulk/zram.ggy
- else
-  echo 1 > /sys/devices/virtual/block/zram0/reset
-  swapoff /dev/block/zram0
-  echo `expr $zramdisksize \* 1024 \* 1024` > /sys/devices/virtual/block/zram0/disksize
-  echo `expr $swappiness \* 1` > /proc/sys/vm/swappiness
-  mkswap /dev/block/zram0
-  swapon /dev/block/zram0
-  echo "2" > /data/.hulk/zram.ggy
- fi;
- fi;
-else
-echo "0" > /data/.hulk/zram.ggy
-fi;
-
-if [ "$hotplug" == "1" ];then
-        stop mpdecision
-	mv /system/bin/mpdecision /system/bin/mpdecision.googy
-        echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-else
-        echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
-	mv /system/bin/mpdecision.googy /system/bin/mpdecision
-	start mpdecision
-fi;
-
 # cpu
-if [ "$hotplug" == "0" ];then
-   stop mpdecision
-else
-   echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
-fi;
+
     echo "N" > /sys/module/msm_thermal/parameters/enabled
     echo "1" > /sys/devices/system/cpu/cpu0/online
     echo "1" > /sys/devices/system/cpu/cpu1/online
     echo "1" > /sys/devices/system/cpu/cpu2/online
     echo "1" > /sys/devices/system/cpu/cpu3/online
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor;
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor;
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
     echo "Y" > /sys/module/msm_thermal/parameters/enabled
-if [ "$hotplug" == "0" ];then
-   start mpdecision
-else
-   echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-fi;
 
 if [ "$logger_mode" == "on" ]; then
 	echo "1" > /sys/kernel/logger_mode/logger_mode;
@@ -263,47 +237,49 @@ fi
 
 if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 
-	newvolt18=$(( $(grep 270000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT18) ))
-	newvolt17=$(( $(grep 378000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT17) ))
-	newvolt16=$(( $(grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT16) ))
-	newvolt15=$(( $(grep 594000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
-	newvolt14=$(( $(grep 702000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
-	newvolt13=$(( $(grep 810000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT13) ))
-	newvolt12=$(( $(grep 918000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
-	newvolt11=$(( $(grep 1026000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
-	newvolt10=$(( $(grep 1134000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT10) ))
-	newvolt9=$(( $(grep 1242000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT9) ))
-	newvolt8=$(( $(grep 1350000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT8) ))
-	newvolt7=$(( $(grep 1458000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT7) ))
-	newvolt6=$(( $(grep 1566000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT6) ))
-	newvolt5=$(( $(grep 1674000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT5) ))
-	newvolt4=$(( $(grep 1782000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT4) ))
-	newvolt3=$(( $(grep 1890000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT3) ))
-	newvolt2=$(( $(grep 1998000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT2) ))
-	newvolt1=$(( $(grep 2106000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT1) ))
+	newvolt19=$(( $(grep 270000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT19) ))
+	newvolt18=$(( $(grep 378000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT18) ))
+	newvolt17=$(( $(grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT17) ))
+	newvolt16=$(( $(grep 594000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT16) ))
+	newvolt15=$(( $(grep 702000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
+	newvolt14=$(( $(grep 810000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
+	newvolt13=$(( $(grep 918000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT13) ))
+	newvolt12=$(( $(grep 1026000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT12) ))
+	newvolt11=$(( $(grep 1134000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT11) ))
+	newvolt10=$(( $(grep 1242000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT10) ))
+	newvolt9=$(( $(grep 1350000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT9) ))
+	newvolt8=$(( $(grep 1458000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT8) ))
+	newvolt7=$(( $(grep 1566000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT7) ))
+	newvolt6=$(( $(grep 1674000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT6) ))
+	newvolt5=$(( $(grep 1782000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT5) ))
+	newvolt4=$(( $(grep 1890000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT4) ))
+	newvolt3=$(( $(grep 1998000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT3) ))
+	newvolt2=$(( $(grep 2106000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT2) ))
+	newvolt1=$(( $(grep 2214000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT1) ))
 
-	echo "270000 $newvolt18" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "378000 $newvolt17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "486000 $newvolt16" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "594000 $newvolt15" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "702000 $newvolt14" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "810000 $newvolt13" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "918000 $newvolt12" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1026000 $newvolt11" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1134000 $newvolt10" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1242000 $newvolt9" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1350000 $newvolt8" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1458000 $newvolt7" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1566000 $newvolt6" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1674000 $newvolt5" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1782000 $newvolt4" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1890000 $newvolt3" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "1998000 $newvolt2" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
-	echo "2106000 $newvolt1" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "270000 $newvolt19" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "378000 $newvolt18" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "486000 $newvolt17" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "594000 $newvolt16" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "702000 $newvolt15" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "810000 $newvolt14" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "918000 $newvolt13" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1026000 $newvolt12" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1134000 $newvolt11" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1242000 $newvolt10" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1350000 $newvolt9" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1458000 $newvolt8" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1566000 $newvolt7" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1674000 $newvolt6" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1782000 $newvolt5" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1890000 $newvolt4" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "1998000 $newvolt3" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "2106000 $newvolt2" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
+	echo "2214000 $newvolt1" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 		
 fi
 
-# Selinux Switch
+# Selinux Permissive
 
 	setenforce 0;
 

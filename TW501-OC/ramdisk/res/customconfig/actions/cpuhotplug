@@ -1,0 +1,68 @@
+#!/sbin/busybox sh
+
+# $1 - "cpuhotplug"
+# $2 - value=
+# Created By Dorimanx
+
+BB=/sbin/busybox
+
+# get values from profile
+PROFILE=$(cat /data/.hulk/.active.profile);
+. /data/.hulk/"$PROFILE".profile;
+
+if [ -e /system/bin/mpdecision ]; then
+	if [ "$(pgrep -f "/system/bin/mpdecision" | wc -l)" -eq "0" ]; then
+		/system/bin/start mpdecision
+		$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
+	fi;
+fi;
+
+if [ "$(pgrep -f "/system/bin/thermal-engine" | wc -l)" -eq "1" ]; then
+	$BB renice -n -20 -p "$(pgrep -f "/system/bin/thermal-engine")";
+fi;
+
+if [ "a$2" != "a" ]; then
+	cpuhotplug=$2;
+
+	case "${cpuhotplug}" in
+		intelli)
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+			(
+				sleep 2;
+				echo "1" > /sys/kernel/intelli_plug/intelli_plug_active;
+				fi;
+			)&
+		;;
+		msm_mpdecision)
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+			sleep 1;
+			echo "1" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+			if [ -e /system/bin/mpdecision ]; then
+				/system/bin/stop mpdecision
+				/system/bin/start mpdecision
+				$BB renice -n -20 -p "$(pgrep -f "/system/bin/mpdecision")";
+				fi;
+				echo "20" > /sys/devices/system/cpu/cpu0/rq-stats/run_queue_poll_ms;
+			else
+				echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+				echo "1" > /sys/module/msm_hotplug/msm_enabled;
+			fi;
+		;;
+		msm_hotplug)
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active;
+			echo "0" > /sys/devices/system/cpu/cpu0/rq-stats/hotplug_enable;
+			(
+				sleep 2;
+				echo "1" > /sys/module/msm_hotplug/msm_enabled;
+				fi;
+			)&
+		;;
+		*)
+			cpuhotplug=msm_mpdecision;
+		;;
+	esac;
+fi;
+
+echo ${cpuhotplug};

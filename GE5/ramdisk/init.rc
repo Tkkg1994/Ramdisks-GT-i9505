@@ -926,7 +926,7 @@ service bugreport /system/bin/dumpstate -d -p -B \
 
 # SISO-ANDR-PERF :: START Changing scheduler to cfq after boot complete
 on property:sys.boot_completed=1
-	write /sys/block/mmcblk0/queue/scheduler cfq
+	write /sys/block/mmcblk0/queue/scheduler row
 # SISO-ANDR-PERF :: END
 
 # LPM

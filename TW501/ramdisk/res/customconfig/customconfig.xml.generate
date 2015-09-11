@@ -82,7 +82,7 @@ cat << ENDCONFIG
              <spinnerItem name="1782 MHz" value="1782000"/> 
              <spinnerItem name="1890 MHz" value="1890000"/> 
        </spinner>
-       
+
     </settingsPane>
 
 	<settingsPane description="CPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="CPU Voltage Control">
@@ -201,6 +201,7 @@ cat << ENDCONFIG
       <spinner description="Set the maximum frequency the GPU scales up to. Default: 450 MHz." 
                name="GPU max frequency" 
                action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk">"
+             <spinnerItem name="500 MHz" value="500000000"/> 
              <spinnerItem name="450 MHz" value="450000000"/> 
              <spinnerItem name="320 Mhz" value="320000000"/> 
              <spinnerItem name="200 MHz" value="200000000"/> 
@@ -431,9 +432,7 @@ cat << ENDCONFIG
     
       <checkbox description="Sched Autogroup" name="Enable/Disable Sched Autogroup" action="generic01 /proc/sys/kernel/sched_autogroup_enabled" label="Sched Autogroup"/>      
       
-      <checkbox description="KSM (Kernel Samepage Merging)" name="Enable/Disable KSM" action="generic01 /sys/kernel/mm/ksm/run" label="KSM"/>      
-      
-      <checkbox description="KSM deferred timers" name="Enable/Disable KSM deferred timers" action="generic01 /sys/kernel/mm/ksm/deferred_timer" label="KSM deferred timers"/>      
+      <checkbox description="KSM (Ultra-Kernel Samepage Merging)" name="Enable/Disable KSM" action="generic01 /sys/kernel/mm/uksm/run" label="UKSM"/>
       
       <spinner description="TCP congestion control method. Default: cubic" name="TCP congestion control method" action="generic /proc/sys/net/ipv4/tcp_congestion_control">
 	     <spinnerItem name="advanced" value="advanced"/> 
@@ -450,10 +449,6 @@ cat << ENDCONFIG
              <spinnerItem name="westwood" value="westwood"/>
 	     <spinnerItem name="yeah" value="yeah"/> 
       </spinner>
-      
-      <checkbox description="Enable or Disable ZRAM (needs reboot). Default: on" name="Sammy ZRAM" action="generic01 /tmp/sammyzram" label="Sammy ZRAM"/>      
-      
-      <seekBar description="ZRAM disk size (needs reboot). Default: 700MB" name="ZRAM disk size" action="generic /tmp/zramdisksize" unit="MB" min="300" reversed="false" step="100" max="1000"/>
       
 	<spinner description="VM swappiness. Default: 60" name="VM swappiness" action="generic /proc/sys/vm/swappiness">
 		<spinnerItem name="40" value="40"/> 
@@ -482,7 +477,7 @@ cat << ENDCONFIG
       
       <checkbox description="Apply nfsmw_gr's kernel special tweaks (needs reboot). Default: off" name="Special tweaks" action="generic01 /tmp/tweaks" label="Special tweaks"/>      
       
-    </settingsPane>
+	</settingsPane>
 
   </settingsTab>
 

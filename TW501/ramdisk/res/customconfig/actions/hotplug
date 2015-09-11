@@ -1,33 +1,47 @@
 #!/sbin/busybox sh
 
-if [ "a$2" != "a" ];then
+# use this script only if you are tuning existing file!
+# script check if $2 really exist.
 
-filename=$(basename $2)
+if [ "a$2" != "a" ]; then
 
-if [ "a$3" == "a" ];then
-  evalcmd='eval "echo \$$filename"'
-  eval $evalcmd
-else
-  evalcmd='eval "$filename=$3"'
-  eval $evalcmd
-  evalcmd='eval "echo \$$filename"'
-  eval $evalcmd
+	filename=$(basename "$2");
+
+	if [ "a$3" == "a" ]; then
+		evalcmd='eval "echo \$$filename"';
+		eval $evalcmd;
+	else
+		evalcmd='eval "$filename=$3"';
+		eval $evalcmd;
+		evalcmd='eval "echo \$$filename"';
+		eval $evalcmd;
   
-case "$hotplug" in
+		case "$hotplug" in
 
-  0)
-        echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
-	mv /system/bin/mpdecision.googy /system/bin/mpdecision
-	start mpdecision
-	echo "MPDecision enabled"
-  ;; 
-  1)
-        stop mpdecision
-	mv /system/bin/mpdecision /system/bin/mpdecision.googy
-        echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-	echo "Intelli-Plug enabled"
-  ;;
+		1)
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+			mv /system/bin/mpdecision.googy /system/bin/mpdecision
+			start mpdecision
+			echo "MPDecision enabled"
+		;;
+
+		2)
+			stop mpdecision
+			echo "0" > /sys/module/msm_hotplug/msm_enabled;
+			echo "1" > /sys/kernel/intelli_plug/intelli_plug_active
+			echo "Intelli-Plug enabled"
+		;;
+
+		3)
+			stop mpdecision
+			mv /system/bin/mpdecision /system/bin/mpdecision.googy
+			echo "0" > /sys/kernel/intelli_plug/intelli_plug_active
+			echo "1" > /sys/module/msm_hotplug/msm_enabled;
+			echo "MSM-Hotplug enabled"
+		;;
 esac;
 
 fi
 fi
+

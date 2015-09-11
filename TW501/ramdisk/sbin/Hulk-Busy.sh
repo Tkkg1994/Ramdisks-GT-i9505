@@ -1,19 +1,16 @@
 #!/sbin/busybox sh
 
+# Kernel Tuning Script by Tkkg with a very big thanks to Dorimanx.
+
 BB=/sbin/busybox
 
 # protect init from oom
-# echo "-1000" > /proc/1/oom_score_adj;
-# 
-# PIDOFINIT=$(pgrep -f "/sbin/ext/hulk.sh");
-# for i in $PIDOFINIT; do
-# 	echo "-600" > /proc/"$i"/oom_score_adj;
-# done;
+echo "-1000" > /proc/1/oom_score_adj;
 
 OPEN_RW()
 {
-        $BB mount -o remount,rw /;
-        $BB mount -o remount,rw /system;
+	$BB mount -o remount,rw /;
+	$BB mount -o remount,rw /system;
 }
 OPEN_RW;
 
@@ -161,31 +158,6 @@ fi;
 
 read_defaults;
 read_config;
-
-# zram
-if [ "$sammyzram" == "on" ];then
- if [ -f /system/bin/rtccd3 ]; then
-  UNIT="M"
-  /system/bin/rtccd3 -a "$zramdisksize$UNIT"
-  echo "1" > /data/.hulk/zram.ggy
- else
- if [ -f /system/bin/rtccd2 ]; then
-  UNIT="M"
-  /system/bin/rtccd2 -a "$zramdisksize$UNIT"
-  echo "3" > /data/.hulk/zram.ggy
- else
-  echo 1 > /sys/devices/virtual/block/zram0/reset
-  swapoff /dev/block/zram0
-  echo `expr $zramdisksize \* 1024 \* 1024` > /sys/devices/virtual/block/zram0/disksize
-  echo `expr $swappiness \* 1` > /proc/sys/vm/swappiness
-  mkswap /dev/block/zram0
-  swapon /dev/block/zram0
-  echo "2" > /data/.hulk/zram.ggy
- fi;
- fi;
-else
-echo "0" > /data/.hulk/zram.ggy
-fi;
 
 if [ "$hotplug" == "1" ];then
         stop mpdecision
