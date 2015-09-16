@@ -461,10 +461,10 @@ cat << ENDCONFIG
 			action="generic /sys/kernel/sound_control/gpl_headphone_gain"
 			unit="" min="0" reversed="false" step="1" max="80"/>
 
-		<seekBar description="Headphone PowerAmp gain. Default: 20" 
+		<seekBar description="Headphone PowerAmp gain. Default: 40" 
 			name="Headphone PA gain" 
 			action="generic /sys/kernel/sound_control/gpl_headphone_pa_gain"
-			unit="" min="0" reversed="false" step="1" max="40"/>
+			unit="" min="0" reversed="false" step="1" max="80"/>
 
 		<seekBar description="Speaker gain. Default: 40" 
 			name="Speaker gain" 
@@ -655,14 +655,9 @@ cat << ENDCONFIG
 		</spinner>
       
 		<checkbox description="Enable or Disable ZRAM (needs reboot). Default: on"
-			name="Sammy ZRAM"
-			action="generic01 /tmp/sammyzram"
-			label="Sammy ZRAM"/>      
-      
-		<seekBar description="ZRAM disk size (needs reboot). Default: 700MB"
-			name="ZRAM disk size"
-			action="generic /tmp/zramdisksize"
-			unit="MB" min="300" reversed="false" step="100" max="1000"/>
+			name="SSwap"
+			action="generic01 /tmp/sswap"
+			label="Enable"/>      
       
 		<spinner description="VM swappiness. Default: 60"
 			name="VM swappiness"

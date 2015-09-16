@@ -180,6 +180,14 @@ fi;
 read_defaults;
 read_config;
 
+# zram
+if [ "$sswap" == "on" ];then
+	/sbin/sswap -s
+	echo "1" > /data/.hulk/zram.ggy
+else
+	echo "0" > /data/.hulk/zram.ggy
+fi;
+
 # cpu
 
     echo "N" > /sys/module/msm_thermal/parameters/enabled

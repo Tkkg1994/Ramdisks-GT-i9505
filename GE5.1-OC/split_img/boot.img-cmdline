@@ -1,0 +1,1 @@
+console=null androidboot.hardware=jgedlte user_debug=22 msm_rtb.filter=0x3F ehci-hcd.park=3

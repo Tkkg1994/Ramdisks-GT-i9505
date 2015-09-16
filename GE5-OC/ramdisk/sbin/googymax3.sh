@@ -163,18 +163,6 @@ fi;
 read_defaults;
 read_config;
 
-if [ "$sammyzram" == "on" ];then
-
-  echo 1 > /sys/devices/virtual/block/zram0/reset
-  swapoff /dev/block/zram0
-
-  echo `expr $zramdisksize \* 1024 \* 1024` > /sys/devices/virtual/block/zram0/disksize
-  echo `expr $swappiness \* 1` > /proc/sys/vm/swappiness
-  mkswap /dev/block/zram0
-  swapon /dev/block/zram0
-
-fi;
-
 if [ "$hotplug" == "1" ];then
         stop mpdecision
 	mv /system/bin/mpdecision /system/bin/mpdecision.googy
