@@ -26,6 +26,18 @@ OPEN_RW;
 # Boot with row I/O Gov
 $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
+# Move Kernel Log to log normal storage
+$BB mkdir /sdcard/log/;
+$BB chmod 770 /sdcard/log/;
+$BB mv /proc/last_kmsg /sdcard/log/;
+$BB mv /sdcard/log/last_kmsg /sdcard/log/last_kmsg.txt;
+
+# run ROM scripts
+if [ -f /system/etc/init.qcom.post_boot.sh ]; then
+	$BB chmod 755 /system/etc/init.qcom.post_boot.sh;
+	$BB sh /system/etc/init.qcom.post_boot.sh;
+fi;
+
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d/
@@ -36,14 +48,6 @@ fi;
 		$BB mkdir /data/init.d_bkp;
 	fi;
 	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
-
-	# run ROM scripts
-	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-		 /system/bin/sh /system/etc/init.qcom.post_boot.sh
-	else
-		$BB echo "No ROM Boot script detected"
-	fi;
-
 	$BB mv /data/init.d_bkp/* /system/etc/init.d/
 
 sleep 5;
@@ -51,11 +55,12 @@ OPEN_RW;
 
 # some nice thing for dev
 if [ ! -e /cpufreq ]; then
-	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
+	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq/ /cpufreq;
 	$BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
 	$BB ln -s /sys/module/msm_thermal/parameters/ /cputemp;
-	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli;
-	$BB ln -s /sys/module/msm_mpdecision/ /hotplugs/msm_mpdecision;
+	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli_plug;
+	$BB ln -s /sys/module/msm_hotplug/ /hotplugs/msm_hotplug;
+	$BB ln -s /sys/module/lazyplug/ /hotplugs/lazyplug;
 	$BB ln -s /sys/devices/system/cpu/cpufreq/all_cpus/ /all_cpus;
 fi;
 
@@ -78,6 +83,7 @@ CRITICAL_PERM_FIX()
 	$BB chmod -R 0777 /data/anr/;
 	$BB chmod -R 0400 /data/tombstones;
 	$BB chmod 06755 /sbin/busybox;
+	$BB chmod 06755 /system/xbin/busybox;
 }
 CRITICAL_PERM_FIX;
 
@@ -96,11 +102,13 @@ $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
+$BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
 $BB chmod 666 /sys/devices/system/cpu/cpu1/online
 $BB chmod 666 /sys/devices/system/cpu/cpu2/online
 $BB chmod 666 /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/module/msm_thermal/parameters/*
 $BB chmod 666 /sys/module/msm_thermal/core_control/enabled
+$BB chmod 666 /sys/kernel/intelli_plug/*
 $BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
 $BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
@@ -153,51 +161,35 @@ fi;
 
 [ ! -f /data/.hulk/default.profile ] && cp /res/customconfig/default.profile /data/.hulk/default.profile;
 [ ! -f /data/.hulk/battery.profile ] && cp /res/customconfig/battery.profile /data/.hulk/battery.profile;
-[ ! -f /data/.hulk/balanced.profile ] && cp /res/customconfig/balanced.profile /data/.hulk/balanced.profile;
 [ ! -f /data/.hulk/performance.profile ] && cp /res/customconfig/performance.profile /data/.hulk/performance.profile;
 
+$BB chmod -R 0777 /data/.hulk/;
+
+. /res/customconfig/customconfig-helper;
 read_defaults;
 read_config;
 
-if [ "$hotplug" == "1" ];then
-        stop mpdecision
-	mv /system/bin/mpdecision /system/bin/mpdecision.googy
-        echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-else
-        echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
-	mv /system/bin/mpdecision.googy /system/bin/mpdecision
-	start mpdecision
-fi;
 
 # cpu
-if [ "$hotplug" == "0" ];then
-   stop mpdecision
-else
-   echo "0" > /sys/module/intelli_plug/parameters/intelli_plug_active
-fi;
+
     echo "N" > /sys/module/msm_thermal/parameters/enabled
     echo "1" > /sys/devices/system/cpu/cpu0/online
     echo "1" > /sys/devices/system/cpu/cpu1/online
     echo "1" > /sys/devices/system/cpu/cpu2/online
     echo "1" > /sys/devices/system/cpu/cpu3/online
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor;
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor;
-    echo "$cpu_governor" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
-    echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
-    echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor;
+    echo "$cpugov" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
+    echo "$cpuminfreq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
+    echo "$cpumaxfreq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
     echo "Y" > /sys/module/msm_thermal/parameters/enabled
-if [ "$hotplug" == "0" ];then
-   start mpdecision
-else
-   echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
-fi;
 
 if [ "$logger_mode" == "on" ]; then
 	echo "1" > /sys/kernel/logger_mode/logger_mode;
@@ -219,10 +211,9 @@ fi;
 # enable kmem interface for everyone by GM
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
-# apply STweaks defaults
-export CONFIG_BOOTING=1
-/res/uci.sh apply
-export CONFIG_BOOTING=
+# apply STweaks settings
+$BB sh /res/uci_boot.sh apply;
+$BB mv /res/uci_boot.sh /res/uci.sh;
 
 OPEN_RW;
 
@@ -269,10 +260,6 @@ if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 		
 fi
 
-# Selinux Switch
-
-	setenforce 0;
-
 # GPU Voltage Control Switch
 
 if [ "$CONTROLSWITCH_GPU" == "on" ]; then
@@ -313,8 +300,6 @@ if [ ! -f /system/app/STweaks_Googy-Max.apk ] ; then
 	$BB chmod 644 /system/app/STweaks_Googy-Max.apk;
 fi;
 
-# echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
-# echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
 
 # Special kernel tweaks (thx to nfsmw_gr)
 if [ "$tweaks" == "on" ];then

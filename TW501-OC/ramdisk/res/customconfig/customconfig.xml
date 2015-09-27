@@ -1,0 +1,716 @@
+<settingsRoot> 
+
+<settingsTab name="CPU">
+
+	<settingsPane name="CPU Clock Control" description="CPU Clock control">
+	      
+		<checkbox description="Disabling GENTLE_FAIR_SLEEPERS may give you better UI responsiveness."
+			name="GENTLE_FAIR_SLEEPERS"
+			action="generic01 /sys/kernel/sched/gentle_fair_sleepers"
+			label="GENTLE_FAIR_SLEEPERS"/>
+      
+		<checkbox description="Enable ARCH_POWER to use arch dependent power functions"
+			name="ARCH_POWER"
+			action="generic01 /sys/kernel/sched/arch_power"
+			label="ARCH_POWER"/>
+
+		<spinner description="This will set the default CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps."
+			name="Default CPU Governor"
+			action="cpugov">
+			<spinnerItem name="Abyssplug" value="abyssplug"/> 
+			<spinnerItem name="Abyssplugv2" value="abyssplugv2"/> 
+			<spinnerItem name="Arteractive" value="arteractive"/> 
+			<spinnerItem name="Asswax" value="asswax"/> 
+			<spinnerItem name="Badass" value="badass"/> 
+			<spinnerItem name="Barry_Allen" value="barry_allen"/> 
+			<spinnerItem name="Bluactive" value="bluactive"/> 
+			<spinnerItem name="Conservative" value="conservative"/> 
+			<spinnerItem name="Dancedance" value="dancedance"/> 
+			<spinnerItem name="Darkness" value="darkness"/> 
+			<spinnerItem name="Elementalx" value="elementalx"/> 
+			<spinnerItem name="HYPER" value="HYPER"/> 
+			<spinnerItem name="Intellimm" value="intellimm"/> 
+			<spinnerItem name="Intelliactive" value="intelliactive"/> 
+			<spinnerItem name="Intellidemand" value="intellidemand"/> 
+			<spinnerItem name="Impulse" value="impulse"/> 
+			<spinnerItem name="Interactive" value="interactive"/> 
+			<spinnerItem name="Lazy" value="lazy"/> 
+			<spinnerItem name="LionHeart" value="Lionheart"/> 
+			<spinnerItem name="Nightmare" value="nightmare"/> 
+			<spinnerItem name="Ondemand" value="ondemand"/> 
+			<spinnerItem name="OndemandPlus" value="ondemandplus"/> 
+			<spinnerItem name="Optimax" value="optimax"/> 
+			<spinnerItem name="Performance" value="performance"/> 
+			<spinnerItem name="Powersave" value="powersave"/> 
+			<spinnerItem name="PegasusQ" value="pegasusq"/> 
+			<spinnerItem name="Preservative" value="preservative"/> 
+			<spinnerItem name="SmartassH3" value="smartassH3"/> 
+			<spinnerItem name="SmartassV2" value="smartassV2"/> 
+			<spinnerItem name="Smartmax" value="smartmax"/> 
+			<spinnerItem name="TripnDroid" value="tripndroid"/> 
+			<spinnerItem name="Userspace" value="userspace"/> 
+			<spinnerItem name="Wheatley" value="wheatley"/> 
+			<spinnerItem name="Yankactive" value="yankactive"/> 
+			<spinnerItem name="Yankdemand" value="yankdemand"/> 
+			<spinnerItem name="ZZmoove" value="zzmoove"/> 
+		</spinner>
+       
+		<spinner description="Set the maximum frequency the CPU scales up to. Default: 1890 MHz."
+			name="CPU max frequency"
+			action="cpumaxfreq">
+			<spinnerItem name="2214 MHz" value="2214000"/> 
+			<spinnerItem name="2106 MHz" value="2106000"/> 
+			<spinnerItem name="1998 MHz" value="1998000"/> 
+			<spinnerItem name="1890 MHz" value="1890000"/> 
+			<spinnerItem name="1782 MHz" value="1782000"/> 
+			<spinnerItem name="1674 MHz" value="1674000"/> 
+			<spinnerItem name="1566 MHz" value="1566000"/> 
+			<spinnerItem name="1458 MHz" value="1458000"/> 
+			<spinnerItem name="1350 MHz" value="1350000"/> 
+			<spinnerItem name="1242 MHz" value="1242000"/> 
+			<spinnerItem name="1134 MHz" value="1134000"/> 
+			<spinnerItem name="1026 MHz" value="1026000"/> 
+			<spinnerItem name="918 MHz" value="918000"/> 
+			<spinnerItem name="810 MHz" value="810000"/> 
+			<spinnerItem name="702 MHz" value="702000"/> 
+			<spinnerItem name="594 MHz" value="594000"/> 
+			<spinnerItem name="486 MHz" value="486000"/> 
+			<spinnerItem name="378 MHz" value="378000"/> 
+			<spinnerItem name="270 MHz" value="270000"/> 
+			<spinnerItem name="189 MHz" value="189000"/> 
+			<spinnerItem name="135 MHz" value="135000"/> 
+			<spinnerItem name="81 MHz" value="81000"/> 
+		</spinner>
+       
+		<spinner description="Set the minimum frequency the CPU scales down to. Default: 378 MHz."
+			name="CPU min frequency"
+			action="cpuminfreq">
+			<spinnerItem name="81 MHz" value="81000"/> 
+			<spinnerItem name="135 MHz" value="135000"/> 
+			<spinnerItem name="189 MHz" value="189000"/> 
+			<spinnerItem name="270 MHz" value="270000"/> 
+			<spinnerItem name="378 MHz" value="378000"/> 
+			<spinnerItem name="486 MHz" value="486000"/> 
+			<spinnerItem name="594 MHz" value="594000"/> 
+			<spinnerItem name="702 MHz" value="702000"/> 
+			<spinnerItem name="810 MHz" value="810000"/> 
+			<spinnerItem name="918 MHz" value="918000"/> 
+			<spinnerItem name="1026 MHz" value="1026000"/> 
+			<spinnerItem name="1134 MHz" value="1134000"/> 
+			<spinnerItem name="1242 MHz" value="1242000"/> 
+			<spinnerItem name="1350 MHz" value="1350000"/> 
+			<spinnerItem name="1458 MHz" value="1458000"/> 
+			<spinnerItem name="1566 MHz" value="1566000"/> 
+			<spinnerItem name="1674 MHz" value="1674000"/> 
+			<spinnerItem name="1782 MHz" value="1782000"/> 
+			<spinnerItem name="1890 MHz" value="1890000"/> 
+			<spinnerItem name="1998 MHz" value="1998000"/> 
+			<spinnerItem name="2106 MHz" value="2106000"/> 
+			<spinnerItem name="2214 MHz" value="2214000"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane name="CPU Booster" description="Booster Control">
+
+		<seekBar description="How long should the cpu be boosted?"
+		name="Boost time"
+		action="generic /sys/module/cpu_boost/parameters/boost_ms"
+		unit="ms" min="0" reversed="false" step="1" max="2000"/>
+
+		<spinner description="Enable to boost Hotplugs"
+			name="Hotplug Booster"
+			action="generic /sys/module/cpu_boost/parameters/hotplug_boost">
+			<spinnerItem name="Yes, enable it" value="Y"/> 
+			<spinnerItem name="NO, don't enable this" value="N"/> 
+		</spinner>
+
+		<spinner description="Enable to wakeup boost"
+			name="Wakeup Booster"
+			action="generic /sys/module/cpu_boost/parameters/wakeup_boost">
+			<spinnerItem name="Yes, enable it" value="Y"/> 
+			<spinnerItem name="NO, don't enable this" value="N"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="CPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="CPU Voltage Control">
+
+		<checkbox description="Enable/Disable CPU Voltage Control."
+			name="CPU Voltage Control Switch"
+			action="generic01 /tmp/CONTROLSWITCH_CPU" label="CPU Voltage Control Switch"/>
+
+		<seekBar description="Device default voltage for 2214 MHz: `grep 2214000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 2214 MHz"
+			action="cpu-voltage 1"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 2106 MHz: `grep 2106000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 2106 MHz"
+			action="cpu-voltage 2"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1998 MHz: `grep 1998000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1998 MHz"
+			action="cpu-voltage 3"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1890 MHz: `grep 1890000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1890 MHz"
+			action="cpu-voltage 4"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1782 MHz: `grep 1782000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1782 MHz"
+			action="cpu-voltage 5"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1674 MHz: `grep 1674000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1674 MHz"
+			action="cpu-voltage 6"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1566 MHz: `grep 1566000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1566 MHz"
+			action="cpu-voltage 7"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1458 MHz: `grep 1458000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1458 MHz"
+			action="cpu-voltage 8"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1350 MHz: `grep 1350000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1350 MHz"
+			action="cpu-voltage 9"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1242 MHz: `grep 1242000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1242 MHz"
+			action="cpu-voltage 10"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1134 MHz: `grep 1134000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1134 MHz"
+			action="cpu-voltage 11"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 1026 MHz: `grep 1026000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 1026 MHz"
+			action="cpu-voltage 12"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 918 MHz: `grep 918000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 918 MHz"
+			action="cpu-voltage 13"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 810 MHz: `grep 810000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 810 MHz"
+			action="cpu-voltage 14"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 702 MHz: `grep 702000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 702 MHz"
+			action="cpu-voltage 15"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 594 MHz: `grep 594000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 594 MHz"
+			action="cpu-voltage 16"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 486 MHz: `grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 486 MHz"
+			action="cpu-voltage 17"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 378 MHz: `grep 378000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 378 MHz"
+			action="cpu-voltage 18"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+		<seekBar description="Device default voltage for 270 MHz: `grep 270000 /data/.hulk/vdd_levels.ggy | awk '{print $2}'` µV"
+			name="Voltage delta 270 MHz"
+			action="cpu-voltage 19"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Hotplug">
+
+	<settingsPane name="Change Hotplug" description="Here you can choose the different hotplug mechanism. The settings below will only work if the right hotplug mode is enabled!">
+
+		<spinner description="Choose your beloved Hotplug"
+			name="Hotplug Changing"
+			action="cpuhotplug">
+			<spinnerItem name="MPDecision" value="1"/> 
+			<spinnerItem name="Intelli-Plug" value="2"/> 
+			<spinnerItem name="LazyPlug" value="3"/> 
+			<spinnerItem name="MSM-Hotplug" value="4"/> 
+		</spinner>
+
+		<checkbox description="Enable Zen Decision will help MPDecision with hotplugging. With other hotplugs than MPDecision this is useless!"
+			name="Zen_Decision"
+			action="generic01 /sys/kernel/zen_decision/enabled"
+			label="Zen Decision for MPDecision"/>
+
+	</settingsPane>
+
+	<settingsPane name="Intelli-Plug/MSM-Hotplug" description="This will only work, if intelli-plug or MSM hotplug is set!">
+
+		<spinner description="Here you can select different profiles for intelli-plug"
+			name="Intelli-Plug profiles"
+			action="generic /sys/kernel/intelli_plug/full_mode_profile">
+			<spinnerItem name="Balanced" value="0"/> 
+			<spinnerItem name="Performance" value="1"/> 
+			<spinnerItem name="Conservative" value="2"/> 
+			<spinnerItem name="Eco Performance" value="3"/> 
+			<spinnerItem name="Eco Conservative" value="4"/> 
+		</spinner>
+
+		<spinner description="Maximum allowed CPU Cores online - you can have QUAD CORE, or select CPU CORE type that you want, This mod will work with MSM Hotplug, Lazyplug and IntelliPlug. Default MPDecision  is not supported. This set is stronger than MIN cores online below!"
+			name="Intelli-Plug, MSM hotplug and Lazyplug max possible cores"
+			action="max_online_cpus">
+			<spinnerItem name="Quad Core" value="4"/> 
+			<spinnerItem name="Triple Core" value="3"/> 
+			<spinnerItem name="Dual Core" value="2"/> 
+			<spinnerItem name="Single Core" value="1"/> 
+		</spinner>
+
+		<spinner description="Minimum allowed CPU Cores online - here you can set the minimum number of CPU cores to be online nonstop when screen is ON. By default, we have only one core online when device is idle. You can set 2, 3 or all 4 if you wish - this will give your device much more power, but will drain the battery faster and warm up the device faster. Default is one core online + other cores offline until needed. This setting is weaker than MAX cores online above! If you set 2 max cores online and 4 min cores online, you get 2 cores max."
+			name="Intelli-Plug and MSM min possible cores"
+			action="min_online_cpus">
+			<spinnerItem name="1" value="1"/> 
+			<spinnerItem name="2" value="2"/> 
+			<spinnerItem name="3" value="3"/> 
+			<spinnerItem name="4" value="4"/> 
+		</spinner>
+
+		<spinner description="How many cores should be boosted with intelli-plug?"
+			name="Intelli-Plug and MSM hotplug boosted cores"
+			action="boosted_cpus">
+			<spinnerItem name="1" value="1"/> 
+			<spinnerItem name="2" value="2"/> 
+			<spinnerItem name="3" value="3"/> 
+			<spinnerItem name="4" value="4"/> 
+		</spinner>
+
+		<spinner description="CPU HotPlug Suspend Control - you can allow hotplug to be suspended when screen is OFF to save little more power on deepsleep, then resume when screen is ON, BUT it's will DELAY In Call screen wakeup! for 2sec as when screen is OFF, you have only ONE core active with suspend mode. also using suspend mode can prevent wake up for some devices for unknown reason!!!. so if you wish to test suspend mode go ahead, if you get SOD switch to Always Active mode and stay there. For many it's working fine. This is for msm hotplug and intelliplug, default hotplug is not supported."
+			name="HotPlug Suspend Mode"
+			action="hotplug_suspend">
+			<spinnerItem name="Always Active" value="always_active"/> 
+			<spinnerItem name="HotPlug Suspend" value="suspend_when_off"/> 
+		</spinner>
+
+	</settingsPane>
+
+</settingsTab>
+ 
+<settingsTab name="THERMAL">
+
+	<settingsPane description="Poll interval" name="Poll interval">
+
+		<seekBar description="Poll interval (ms)"
+			name="Poll interval. Default: 250ms"
+			action="generic /sys/module/msm_thermal/parameters/poll_ms"
+			unit="ms" min="50" reversed="false" step="50" max="1000"/>
+
+	</settingsPane>
+
+	<settingsPane name="Temp. Limit" description="Temperature limit control, please pay attention, you can overheat your phone with this!!">
+
+		<seekBar description="Temperature limit for cores (°C)"
+			name="Core Temp. Limit (85°C)"
+			action="generic /sys/module/msm_thermal/parameters/core_limit_temp_degC"
+			unit="°C" min="60" reversed="false" step="1" max="120"/>
+
+		<seekBar description="Temperature limit for device (°C)"
+			name="Checkes the temp. for the whole device (80°C)"
+			action="generic /sys/module/msm_thermal/parameters/limit_temp_degC"
+			unit="°C" min="60" reversed="false" step="1" max="110"/>
+
+	</settingsPane>
+    
+</settingsTab>
+        
+
+<settingsTab name="GPU/RGB">
+
+	<settingsPane name="GPU Clock Control" description="GPU Clock control">		  
+      
+		<spinner description="Default GPU governor"
+			name="Default GPU Governor"
+			action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/trustzone/governor">
+			<spinnerItem name="OnDemand" value="ondemand"/> 
+			<spinnerItem name="Simple" value="simple"/> 
+			<spinnerItem name="Performance" value="performance"/> 
+		</spinner>
+       
+
+		<spinner description="Set the maximum frequency the GPU scales up to. Default: 450 MHz." 
+			name="GPU max frequency" 
+			action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk">
+			<spinnerItem name="500 MHz" value="500000000"/> 
+			<spinnerItem name="450 MHz" value="450000000"/> 
+			<spinnerItem name="360 Mhz" value="360000000"/> 
+			<spinnerItem name="200 MHz" value="200000000"/> 
+			<spinnerItem name="128 MHz" value="128000000"/> 
+		</spinner>
+
+              
+	</settingsPane>
+    
+	<settingsPane description="GPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="GPU Voltage Control">
+    
+		<checkbox description="Enable/Disable GPU Voltage Control."
+			name="GPU Voltage Control Switch"
+			action="generic01 /tmp/CONTROLSWITCH_GPU"
+			label="GPU Voltage Control Switch"/>
+
+		<seekBar description="Device default voltage for Level1: `sed -n '1p' /data/.hulk/GPU_mV_table.ggy` µV"
+			name="GPU Voltage delta Level1."
+			action="gpu-voltage 1"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+
+		<seekBar description="Device default voltage for Level2: `sed -n '2p' /data/.hulk/GPU_mV_table.ggy` µV"
+			name="GPU Voltage delta Level2."
+			action="gpu-voltage 2"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+
+		<seekBar description="Device default voltage for Level3: `sed -n '3p' /data/.hulk/GPU_mV_table.ggy` µV"
+			name="GPU Voltage delta Level3."
+			action="gpu-voltage 3"
+			unit="µV" min="-100000" reversed="false" step="12500" max="100000"/>
+
+	</settingsPane>
+
+	<settingsPane description="RGB colors Control. Please turn the SCREEN OFF and ON for the settings to be applied !" name="RGB colors Control">
+
+		<seekBar description="Red tint control"
+			name="Red tint. (Default: 60)"
+			action="gamma_control r"
+			unit="" min="0" reversed="false" step="2" max="120"/>
+
+		<seekBar description="Green tint control"
+			name="Green tint. (Default: 60)"
+			action="gamma_control g"
+			unit="" min="0" reversed="false" step="2" max="120"/>
+
+		<seekBar description="Blue tint control"
+			name="Blue tint. (Default: 60)"
+			action="gamma_control b"
+			unit="" min="0" reversed="false" step="2" max="120"/>
+
+	</settingsPane>
+
+</settingsTab>
+        
+<settingsTab name="LED">
+
+	<settingsPane description="The notification LED has two brightness modes, depending on the external brightness detected by the light sensor." name="Brightness">
+
+		<seekBar description="LED brightness in low brightness environments."
+			name="Low light environment brightness"
+			action="generic /sys/class/sec/led/led_lowpower_current"
+			unit="" min="0" reversed="false" step="1" max="255"/>
+
+		<seekBar description="LED brightness in high brightness environments."
+			name="Bright light environment brightness"
+			action="generic /sys/class/sec/led/led_highpower_current"
+			unit="" min="0" reversed="false" step="1" max="255"/>
+
+	</settingsPane>
+
+	<settingsPane description="Control the way the LED blinks. The LED controller has 4 type of slopes in its waveform, 2 rising slopes, and two falling slopes. The following configurables can control the blinking waveform. "name="Blinking effect">
+
+		<seekBar description="Sets the time period of the two rising slopes (1,2), one time-unit is equal to 0.5 seconds."
+			name="Fade-in time period"
+			action="generic /sys/class/sec/led/led_fade_in_time"
+			unit="" min="0" reversed="false" step="1" max="12"/>
+
+		<seekBar description="Sets the time period of the two falling slopes (3,4), one time-unit is equal to 0.5 seconds."
+			name="Fade-out time period"
+			action="generic /sys/class/sec/led/led_fade_out_time"
+			unit="" min="0" reversed="false" step="1" max="12"/>
+
+		<checkbox description="If disabled, ignores the below detention times and the blinking waveform has no slopes, i.e. it is square."
+			name="Enable fading"
+			action="generic01 /sys/class/sec/led/led_fade"
+			label="Enable LED fading"/>
+
+		<seekBar description="The LED is controlled by PWM/pulse wave modulation, the detention time dictates how long the controller spends time on a single step in its slope. One time-unit is equivalent to 4ms."
+			name="Slope 1 detention time"
+			action="generic /sys/class/sec/led/led_fade_dt1"
+			unit="" min="0" reversed="false" step="1" max="4"/>
+
+		<seekBar description=""
+			name="Slope 2 detention time"
+			action="generic /sys/class/sec/led/led_fade_dt2"
+			unit="" min="0" reversed="false" step="1" max="4"/>
+
+		<seekBar description=""
+			name="Slope 3 detention time"
+			action="generic /sys/class/sec/led/led_fade_dt3"
+			unit="" min="0" reversed="false" step="1" max="4"/>
+
+		<seekBar description=""
+			name="Slope 4 detention time"
+			action="generic /sys/class/sec/led/led_fade_dt4"
+			unit="" min="0" reversed="false" step="1" max="4"/>
+
+	</settingsPane>
+
+</settingsTab>    
+
+<settingsTab name="Sound">
+
+	<settingsPane name="Sound Control" description="Sound Control">		
+      
+		<seekBar description="Headphone gain. Default: 40" 
+			name="Headphone gain" 
+			action="generic /sys/kernel/sound_control/gpl_headphone_gain"
+			unit="" min="0" reversed="false" step="1" max="80"/>
+
+		<seekBar description="Headphone PowerAmp gain. Default: 40" 
+			name="Headphone PA gain" 
+			action="generic /sys/kernel/sound_control/gpl_headphone_pa_gain"
+			unit="" min="0" reversed="false" step="1" max="80"/>
+
+		<seekBar description="Speaker gain. Default: 40" 
+			name="Speaker gain" 
+			action="generic /sys/kernel/sound_control/gpl_speaker_gain"
+			unit="" min="0" reversed="false" step="1" max="80"/>
+
+		<seekBar description="General Mic gain. Default: 40" 
+			name="General Mic gain" 
+			action="generic /sys/kernel/sound_control/gpl_mic_gain"
+			unit="" min="0" reversed="false" step="1" max="80"/>
+
+		<seekBar description="Camera Mic gain. Default: 40" 
+			name="Camera Mic gain" 
+			action="generic /sys/kernel/sound_control/gpl_cam_mic_gain"
+			unit="" min="0" reversed="false" step="1" max="80"/>
+	</settingsPane>
+
+</settingsTab>
+        
+<settingsTab name="Charge">
+
+	<settingsPane name="AC/USB Charge control" description="AC/USB Charge control">		  
+    
+		<spinner description="Charge control switch" 
+			name="Charge control switch" 
+			action="generic /sys/kernel/fast_charge/force_fast_charge">
+			<spinnerItem name="Disabled" value="0"/> 
+			<spinnerItem name="Substitute AC to USB" value="1"/> 
+			<spinnerItem name="Custom Values" value="2"/> 
+		</spinner>
+      
+		<spinner description="USB charge current (default 700 mA)" 
+			name="USB Charge" 
+			action="generic /sys/kernel/fast_charge/usb_charge_level">
+			<spinnerItem name="460 mA" value="460"/> 
+			<spinnerItem name="500 mA" value="500"/> 
+			<spinnerItem name="600 mA" value="600"/> 
+			<spinnerItem name="700 mA" value="700"/> 
+			<spinnerItem name="800 mA" value="800"/> 
+			<spinnerItem name="900 mA" value="900"/> 
+			<spinnerItem name="1000 mA" value="1000"/> 
+		</spinner>
+
+		<spinner description="AC charge current (default 1800 mA)" 
+			name="AC Charge" 
+			action="generic /sys/kernel/fast_charge/ac_charge_level">
+			<spinnerItem name="1000 mA" value="1000"/> 
+			<spinnerItem name="1100 mA" value="1100"/> 
+			<spinnerItem name="1200 mA" value="1200"/> 
+			<spinnerItem name="1300 mA" value="1300"/> 
+			<spinnerItem name="1400 mA" value="1400"/> 
+			<spinnerItem name="1500 mA" value="1500"/> 
+			<spinnerItem name="1600 mA" value="1600"/> 
+			<spinnerItem name="1700 mA" value="1700"/> 
+			<spinnerItem name="1800 mA" value="1800"/> 
+			<spinnerItem name="1900 mA" value="1900"/> 
+			<spinnerItem name="2000 mA" value="2000"/> 
+			<spinnerItem name="2100 mA" value="2100"/> 
+		</spinner>
+
+		<spinner description="Wireless charging current (default 650 mA)" 
+			name="Wireless Charge" 
+			action="generic /sys/kernel/fast_charge/wireless_charge_level">
+			<spinnerItem name="650 mA" value="650"/> 
+			<spinnerItem name="800 mA" value="800"/> 
+			<spinnerItem name="900 mA" value="900"/> 
+			<spinnerItem name="1000 mA" value="1000"/> 
+			<spinnerItem name="1100 mA" value="1100"/> 
+			<spinnerItem name="1200 mA" value="1200"/> 
+		</spinner>
+
+		<checkbox description="If you disable this, the charger can charge with 2.1 A/h. PAY ATTENTION"
+			name="Enable Failsafe" 
+			action="generic01 /sys/kernel/fast_charge/failsafe" 
+			label="Enable Failsafe"/>
+
+		<checkbox description="You can set if you want to have MTP during fastcharging or not (UBS Mode)"
+			name="Enable MTP during fastcharging" 
+			action="generic01 /sys/kernel/fast_charge/use_mtp_during_fast_charge" 
+			label="Enable MTP during fastcharging"/>
+
+		<checkbox description="If you disable this, the charger will charge with full speed, even if screen is on" 
+			name="Enable Screen Limit" 
+			action="generic01 /sys/kernel/fast_charge/screen_on_current_limit" 
+			label="Enable charging limit while screen is on"/>
+
+	</settingsPane>
+
+</settingsTab>
+    
+<settingsTab name="I/O">
+
+	<settingsPane name="I/O settings" description="I/O settings">
+                  
+		<spinner description="This will set the default I/O scheduler for Internal Storage. Default: row"
+			name="Default I/O Scheduler for Internal Storage"
+			action="iosched_int /tmp/int_scheduler">
+			<spinnerItem name="bfq" value="bfq"/> 
+			<spinnerItem name="cfq" value="cfq"/> 
+			<spinnerItem name="deadline" value="deadline"/> 
+			<spinnerItem name="fifo" value="fifo"/> 
+			<spinnerItem name="fiops" value="fiops"/> 
+			<spinnerItem name="noop" value="noop"/> 
+			<spinnerItem name="row" value="row"/> 
+			<spinnerItem name="sio" value="sio"/> 
+			<spinnerItem name="sioplus" value="sioplus"/> 
+			<spinnerItem name="test" value="test"/> 
+			<spinnerItem name="tripndroid" value="tripndroid"/> 
+			<spinnerItem name="vr" value="vr"/> 
+			<spinnerItem name="zen" value="zen"/> 
+		</spinner>
+
+		<seekBar description="The read-ahead value for the internal storage. Default: 128" 
+			name="Internal storage read-ahead" 
+			action="readahead_int /tmp/int_read_ahead_kb"
+			unit="kB" min="128" reversed="false" step="128" max="4096"/>
+
+		<spinner description="This will set the default I/O scheduler for the external Storage. Default: row"
+			name="Default I/O Scheduler for SD-Card Storage"
+			action="iosched_ext /tmp/ext_scheduler">
+			<spinnerItem name="bfq" value="bfq"/> 
+			<spinnerItem name="cfq" value="cfq"/> 
+			<spinnerItem name="deadline" value="deadline"/> 
+			<spinnerItem name="fifo" value="fifo"/> 
+			<spinnerItem name="fiops" value="fiops"/> 
+			<spinnerItem name="noop" value="noop"/> 
+			<spinnerItem name="row" value="row"/> 
+			<spinnerItem name="sio" value="sio"/> 
+			<spinnerItem name="sioplus" value="sioplus"/> 
+			<spinnerItem name="test" value="test"/> 
+			<spinnerItem name="tripndroid" value="tripndroid"/> 
+			<spinnerItem name="vr" value="vr"/> 
+			<spinnerItem name="zen" value="zen"/> 
+		</spinner>
+
+		<seekBar description="The read-ahead value for the external storage (SD-Card). Default: 256" 
+			name="SD card read-ahead" 
+			action="readahead_ext /tmp/ext_read_ahead_kb"
+			unit="kB" min="128" reversed="false" step="128" max="4096"/>
+                
+		<button description="Apply IO-Scheduler settings."
+			name="Set IO-Schedulers"
+			action="ioschedapply"
+			label="Set IO-Schedulers"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Misc">
+
+	<settingsPane name="Misc. Settings" description="Misc. Settings">
+    
+		<checkbox description="It is recommended to disable Android Logger if you do not need it. Default: On" 
+			name="Enable/Disable Android Logger" 
+			action="generic01 /sys/kernel/logger_mode/logger_mode" 
+			label="Enable Android logger"/>
+    
+		<checkbox description="Sched Autogroup"
+			name="Enable/Disable Sched Autogroup"
+			action="generic01 /proc/sys/kernel/sched_autogroup_enabled"
+			label="Sched Autogroup"/>      
+      
+		<checkbox description="UKSM (Ultra Kernel Samepage Merging)"
+			name="Enable/Disable UKSM"
+			action="generic01 /sys/kernel/mm/uksm/run"
+			label="UKSM"/>         
+      
+		<spinner description="TCP congestion control method. Default: cubic"
+			name="TCP congestion control method"
+			action="generic /proc/sys/net/ipv4/tcp_congestion_control">
+			<spinnerItem name="advanced" value="advanced"/> 
+			<spinnerItem name="bic" value="bic"/> 
+			<spinnerItem name="cubic" value="cubic"/>
+			<spinnerItem name="highspeed" value="hstcp"/> 
+			<spinnerItem name="htcp" value="htcp"/> 
+			<spinnerItem name="hybla" value="hybla"/> 
+			<spinnerItem name="illinois" value="illinois"/> 
+			<spinnerItem name="lp" value="lp"/> 
+			<spinnerItem name="scalable" value="scalable"/> 
+			<spinnerItem name="vegas" value="vegas"/> 
+			<spinnerItem name="veno" value="veno"/> 
+			<spinnerItem name="westwood" value="westwood"/>
+			<spinnerItem name="yeah" value="yeah"/> 
+		</spinner>
+      
+		<spinner description="VM swappiness. Default: 60"
+			name="VM swappiness"
+			action="generic /proc/sys/vm/swappiness">
+			<spinnerItem name="40" value="40"/> 
+			<spinnerItem name="50" value="50"/> 
+			<spinnerItem name="60" value="60"/> 
+			<spinnerItem name="70" value="70"/> 
+			<spinnerItem name="80" value="80"/> 
+			<spinnerItem name="90" value="90"/> 
+			<spinnerItem name="100" value="100"/> 
+		</spinner>
+
+		<spinner description="Set the low memory killer profile" 
+			name="Low memory killer profile" 
+			action="generic /sys/module/lowmemorykiller/parameters/minfree">
+			<spinnerItem name="Stock" value="12288,15360,18432,21504,24576,30720"/> 
+			<spinnerItem name="Very Light" value="512,1024,1280,2048,3072,4096"/> 
+			<spinnerItem name="Light" value="1024,2048,2560,4096,6144,8192"/> 
+			<spinnerItem name="Moderate" value="1024,2048,4096,8192,12288,16384"/> 
+			<spinnerItem name="Agressive" value="2048,4096,8192,16384,24576,32768"/> 
+			<spinnerItem name="Very Agressive" value="4096,8192,16384,32768,49152,65536"/> 
+		</spinner>
+
+		<seekBar description="Dirty background memory buffer. Default: 5%"
+			name="Dirty Background ratio"
+			action="generic /proc/sys/vm/dirty_background_ratio"
+			unit="%" min="5" reversed="false" step="5" max="80"/>
+
+		<seekBar description="Dirty real time memory buffer. Default: 20%"
+			name="Dirty ratio"
+			action="generic /proc/sys/vm/dirty_ratio"
+			unit="%" min="5" reversed="false" step="5" max="90"/>
+
+		<seekBar description="Vibration intensity. Default: 100%"
+			name="Vibration intensity"
+			action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value"
+			unit="%" min="5" reversed="false" step="5" max="100"/>
+      
+		<checkbox description="Apply nfsmw_gr's kernel special tweaks (needs reboot). Default: off"
+			name="Special tweaks" action="generic01 /tmp/tweaks"
+			label="Special tweaks"/>      
+      
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="PROFILES">
+
+	<settingsPane description="You can check which profile is used." name="Online Profile">
+
+		<button description="This displays your currently used profile." name="Profile Check" action="push-actions/profile" label="Profile Check"/>
+
+	</settingsPane>
+
+	<settingsPane description="Select profile. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery." name="STweaks Profiles">
+
+		<button description="battery.profile" name="battery.profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
+
+		<button description="default.profile" name="default.profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
+
+		<button description="performance.profile" name="performance.profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+</settingsRoot>
+

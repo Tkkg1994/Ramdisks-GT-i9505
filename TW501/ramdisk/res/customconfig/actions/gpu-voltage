@@ -1,5 +1,8 @@
 #!/sbin/busybox sh
 
+PROFILE=`cat /data/.hulk/.active.profile`;
+CONTROLSWITCH_GPU=`cat /data/.hulk/${PROFILE}.profile | grep CONTROLSWITCH_GPU=on | wc -l`;
+
 if [ "a$3" == "a" ]; then
 	evalcmd='eval "echo \$GPUVOLT$2"'
 	eval $evalcmd

@@ -1,16 +1,18 @@
 #!/sbin/busybox sh
 
-if [ "a$3" == "a" ]; then
-	evalcmd='eval "echo \$CPUVOLT$2"'
-	eval $evalcmd
-else
-	evalcmd='eval "CPUVOLT$2=$3"'
-	eval $evalcmd
-	evalcmd='eval "echo \$CPUVOLT$2"'
-	eval $evalcmd
+PROFILE=`cat /data/.hulk/.active.profile`;
+CONTROLSWITCH_CPU=`cat /data/.hulk/${PROFILE}.profile | grep CONTROLSWITCH_CPU=on | wc -l`;
 
-# Voltage Control Switch
-if [ "$CONTROLSWITCH_CPU" == "on" ];then
+if [ "a$3" == "a" ]; then
+	evalcmd='eval "echo \$CPUVOLT$2"';
+	eval $evalcmd;
+else
+	evalcmd='eval "CPUVOLT$2=$3"';
+	eval $evalcmd;
+	evalcmd='eval "echo \$CPUVOLT$2"';
+	eval $evalcmd;
+
+if [ "$CONTROLSWITCH_CPU" -eq "1" ]; then
 
 	newvolt15=$(( $(grep 384000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
 	newvolt14=$(( $(grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
@@ -78,6 +80,6 @@ else
 	echo "1782000 $newvolt2" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	echo "1890000 $newvolt1" > /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels
 	
-fi
+	fi;
 
-fi
+fi;

@@ -32,6 +32,12 @@ $BB chmod 770 /sdcard/log/;
 $BB mv /proc/last_kmsg /sdcard/log/;
 $BB mv /sdcard/log/last_kmsg /sdcard/log/last_kmsg.txt;
 
+# run ROM scripts
+if [ -f /system/etc/init.qcom.post_boot.sh ]; then
+	$BB chmod 755 /system/etc/init.qcom.post_boot.sh;
+	$BB sh /system/etc/init.qcom.post_boot.sh;
+fi;
+
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d/
@@ -42,14 +48,6 @@ fi;
 		$BB mkdir /data/init.d_bkp;
 	fi;
 	$BB mv /system/etc/init.d/* /data/init.d_bkp/;
-
-	# run ROM scripts
-	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-		 /system/bin/sh /system/etc/init.qcom.post_boot.sh
-	else
-		$BB echo "No ROM Boot script detected"
-	fi;
-
 	$BB mv /data/init.d_bkp/* /system/etc/init.d/
 
 sleep 5;
@@ -62,7 +60,7 @@ if [ ! -e /cpufreq ]; then
 	$BB ln -s /sys/module/msm_thermal/parameters/ /cputemp;
 	$BB ln -s /sys/kernel/intelli_plug/ /hotplugs/intelli_plug;
 	$BB ln -s /sys/module/msm_hotplug/ /hotplugs/msm_hotplug;
-	$BB ln -s /sys/module/msm_mpdecision/ /hotplugs/msm_mpdecision;
+	$BB ln -s /sys/module/lazyplug/ /hotplugs/lazyplug;
 	$BB ln -s /sys/devices/system/cpu/cpufreq/all_cpus/ /all_cpus;
 fi;
 
@@ -84,7 +82,8 @@ CRITICAL_PERM_FIX()
 	$BB chmod -R 06755 /sbin/ext/;
 	$BB chmod -R 0777 /data/anr/;
 	$BB chmod -R 0400 /data/tombstones;
-	$BB chmod 06755 /sbin/busybox
+	$BB chmod 06755 /sbin/busybox;
+	$BB chmod 06755 /system/xbin/busybox;
 }
 CRITICAL_PERM_FIX;
 
@@ -95,24 +94,12 @@ $BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
 
 # make sure we own the device nodes
 $BB chown system /sys/devices/system/cpu/cpu0/cpufreq/*
-$BB chown system /sys/devices/system/cpu/cpu1/cpufreq/*
-$BB chown system /sys/devices/system/cpu/cpu2/cpufreq/*
-$BB chown system /sys/devices/system/cpu/cpu3/cpufreq/*
 $BB chown system /sys/devices/system/cpu/cpu1/online
 $BB chown system /sys/devices/system/cpu/cpu2/online
 $BB chown system /sys/devices/system/cpu/cpu3/online
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
 $BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
 $BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
 $BB chmod 666 /sys/devices/system/cpu/cpufreq/all_cpus/*
@@ -174,19 +161,14 @@ fi;
 
 [ ! -f /data/.hulk/default.profile ] && cp /res/customconfig/default.profile /data/.hulk/default.profile;
 [ ! -f /data/.hulk/battery.profile ] && cp /res/customconfig/battery.profile /data/.hulk/battery.profile;
-[ ! -f /data/.hulk/balanced.profile ] && cp /res/customconfig/balanced.profile /data/.hulk/balanced.profile;
 [ ! -f /data/.hulk/performance.profile ] && cp /res/customconfig/performance.profile /data/.hulk/performance.profile;
 
+$BB chmod -R 0777 /data/.hulk/;
+
+. /res/customconfig/customconfig-helper;
 read_defaults;
 read_config;
 
-# zram
-if [ "$sswap" == "on" ];then
-	/sbin/sswap -s
-	echo "1" > /data/.hulk/zram.ggy
-else
-	echo "0" > /data/.hulk/zram.ggy
-fi;
 
 # cpu
 
@@ -229,10 +211,9 @@ fi;
 # enable kmem interface for everyone by GM
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
-# apply STweaks defaults
-export CONFIG_BOOTING=1
-/res/uci.sh apply
-export CONFIG_BOOTING=
+# apply STweaks settings
+$BB sh /res/uci_boot.sh apply;
+$BB mv /res/uci_boot.sh /res/uci.sh;
 
 OPEN_RW;
 
@@ -287,10 +268,6 @@ if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 		
 fi
 
-# Selinux Permissive
-
-	setenforce 0;
-
 # GPU Voltage Control Switch
 
 if [ "$CONTROLSWITCH_GPU" == "on" ]; then
@@ -331,8 +308,6 @@ if [ ! -f /system/app/STweaks_Googy-Max.apk ] ; then
 	$BB chmod 644 /system/app/STweaks_Googy-Max.apk;
 fi;
 
-# echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
-# echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
 
 # Special kernel tweaks (thx to nfsmw_gr)
 if [ "$tweaks" == "on" ];then

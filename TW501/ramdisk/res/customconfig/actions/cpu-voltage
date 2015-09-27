@@ -12,8 +12,7 @@ else
 	evalcmd='eval "echo \$CPUVOLT$2"';
 	eval $evalcmd;
 
-# Voltage Control Switch
-if [ "$CONTROLSWITCH_CPU" == "on" ];then
+if [ "$CONTROLSWITCH_CPU" -eq "1" ]; then
 
 	newvolt15=$(( $(grep 384000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
 	newvolt14=$(( $(grep 486000 /data/.hulk/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT14) ))
